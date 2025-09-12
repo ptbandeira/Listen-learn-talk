@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#app {
+    padding-bottom: 80px; /* Add padding to the bottom to avoid content being hidden by the nav bar */
+}
