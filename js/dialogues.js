@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchDialogues() {
         try {
-            const response = await fetch('data/dialogues.json');
+            const response = await fetch('http://localhost:3000/api/dialogues');
             if (!response.ok) {
-                throw new Error('Failed to fetch dialogues.json');
+                throw new Error('Failed to fetch dialogues');
             }
             const data = await response.json();
             return data;

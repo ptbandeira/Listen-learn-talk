@@ -10,19 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let vocabulary = [];
     let currentIndex = 0;
     let isFlipping = false;
-    let learnedWords = JSON.parse(localStorage.getItem('learnedWords')) || [];
+    let learnedWords = [];
 
     async function fetchVocabulary() {
         try {
-            const response = await fetch('data/vocabulary.json');
+            const response = await fetch('http://localhost:3000/api/vocabulary');
             if (!response.ok) {
-                throw new Error('Failed to fetch vocabulary.json');
+                throw new Error('Failed to fetch vocabulary');
             }
             const data = await response.json();
             return data;
         } catch (error) {
             console.error('Error fetching vocabulary:', error);
             return [];
+        }
+    }
+
+    async function fetchLearnedWords() {
+        try {
+            const response = await fetch('http://localhost:3000/api/learned-words');
+            if (!response.ok) {
+                throw new Error('Failed to fetch learned words');
+            }
+            learnedWords = await response.json();
+        } catch (error) {
+            console.error('Error fetching learned words:', error);
         }
     }
 
@@ -49,12 +61,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function toggleLearnedStatus() {
+    async function toggleLearnedStatus() {
         const currentWord = vocabulary[currentIndex].pl;
         if (!learnedWords.includes(currentWord)) {
-            learnedWords.push(currentWord);
-            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
-            updateLearnedButton(currentWord);
+            try {
+                const response = await fetch('http://localhost:3000/api/learned-words', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ word: currentWord }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to mark word as learned');
+                }
+                learnedWords = await response.json();
+                updateLearnedButton(currentWord);
+            } catch (error) {
+                console.error('Error marking word as learned:', error);
+            }
         }
     }
 
@@ -79,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     markAsLearnedButton.addEventListener('click', toggleLearnedStatus);
 
     async function init() {
+        await fetchLearnedWords();
         vocabulary = await fetchVocabulary();
         renderCard();
     }

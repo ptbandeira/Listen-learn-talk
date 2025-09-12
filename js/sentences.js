@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchContent() {
         try {
-            const response = await fetch('data/content.json');
+            const response = await fetch('http://localhost:3000/api/content');
             if (!response.ok) {
-                throw new Error('Failed to fetch content.json');
+                throw new Error('Failed to fetch content');
             }
             const content = await response.json();
             return content;
