@@ -1,0 +1,98 @@
+<div class="flex-grow">
+    <header class="flex items-center p-4">
+        <button class="p-2" onclick="window.history.back()">
+            <span class="material-symbols-outlined text-white">arrow_back_ios_new</span>
+        </button>
+        <h1 class="flex-1 text-center text-xl font-bold pr-10">Goal Setter</h1>
+    </header>
+    <main class="p-4">
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Set Your Learning Goals</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1" for="goal-type">Goal Type</label>
+                    <select class="form-select w-full rounded-lg border-none bg-[#283039] py-3 px-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)]" id="goal-type">
+                        <option>Learn new words</option>
+                        <option>Complete dialogues</option>
+                        <option>Complete lessons</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1" for="goal-value">Number</label>
+                    <input class="form-input w-full rounded-lg border-none bg-[#283039] py-3 px-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)]" id="goal-value" placeholder="e.g. 10" type="number">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1" for="goal-frequency">Frequency</label>
+                    <select class="form-select w-full rounded-lg border-none bg-[#283039] py-3 px-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)]" id="goal-frequency">
+                        <option>Daily</option>
+                        <option>Weekly</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Reminders</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-lg">Enable Reminders</span>
+                    <label class="relative inline-flex items-center cursor-pointer" for="reminder-toggle">
+                        <input checked="" class="sr-only peer" id="reminder-toggle" type="checkbox" value="">
+                        <div class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary-color)]"></div>
+                    </label>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1" for="reminder-time">Time of Day</label>
+                    <input class="form-input w-full rounded-lg border-none bg-[#283039] py-3 px-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)]" id="reminder-time" type="time">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1" for="reminder-frequency">Frequency</label>
+                    <select class="form-select w-full rounded-lg border-none bg-[#283039] py-3 px-4 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)]" id="reminder-frequency">
+                        <option>Daily</option>
+                        <option>Every other day</option>
+                        <option>Weekdays</option>
+                        <option>Weekends</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2 class="text-2xl font-bold mb-4">Active Goals</h2>
+            <div class="space-y-4">
+                <div class="bg-[#283039] p-4 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold">Learn 10 new words daily</p>
+                            <p class="text-sm text-gray-400">Progress: 7/10</p>
+                        </div>
+                        <button class="p-1 text-gray-400 hover:text-white">
+                            <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+                    </div>
+                    <div class="w-full bg-gray-600 rounded-full h-2.5 mt-2">
+                        <div class="bg-[var(--primary-color)] h-2.5 rounded-full" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="bg-[#283039] p-4 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-bold">Complete 2 dialogues weekly</p>
+                            <p class="text-sm text-gray-400">Progress: 1/2</p>
+                        </div>
+                        <button class="p-1 text-gray-400 hover:text-white">
+                            <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+                    </div>
+                    <div class="w-full bg-gray-600 rounded-full h-2.5 mt-2">
+                        <div class="bg-[var(--primary-color)] h-2.5 rounded-full" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="mt-8 flex justify-end">
+            <button class="w-full rounded-lg bg-[var(--primary-color)] py-3 px-6 text-lg font-bold text-white shadow-lg transition-transform duration-200 hover:scale-105">
+                Save Goals
+            </button>
+        </div>
+    </main>
+</div>

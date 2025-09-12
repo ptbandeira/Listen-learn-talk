@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "date": "2024-01-20",
+    "title": "Polish News Today",
+    "source": "Daily Polish News",
+    "type": "news",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCH7CQ2I8ymsfNAYT0_L38mHgZZigHIflIC_Gwzw-_lgzr_1bWhMftkiZa1_8c91WBvPIListSFKldgIXmwZGZDhK6Cpvt7E8g90FL4EnEFHpncDI3NM8ROfxTjNcNpDgqSVhGRee18o_J3xF1Q0eEa3QdPinacxLOgfxxEAcDKvjy_MFWvvgaHzulkjY7tv6UaeXeR8Xi5ZL8VRAcPJhFpdt0Y2pab0LrXQEJn2wxwkvMk07Rj8f_bN63CU9keVQ7ejFz1UVxQvQ",
+    "audio": "https://example.com/audio/news1.mp3",
+    "transcript_pl": "Rząd stoi przed dużym wyzwaniem. Gospodarka wykazuje oznaki ożywienia. Prezydent przemówił do narodu. Opozycja domaga się nowych wyborów. Parlament debatuje nad nową ustawą.",
+    "transcript_en": "The government is facing a major challenge. The economy is showing signs of recovery. The president addressed the nation. The opposition is calling for new elections. The parliament is debating the new law.",
+    "sentences": [
+      {
+        "pl": "Rząd stoi przed dużym wyzwaniem.",
+        "en": "The government is facing a major challenge.",
+        "pt": "O governo está a enfrentar um grande desafio.",
+        "fr": "Le gouvernement est confronté à un défi majeur.",
+        "es": "El gobierno se enfrenta a un gran desafío."
+      },
+      {
+        "pl": "Gospodarka wykazuje oznaki ożywienia.",
+        "en": "The economy is showing signs of recovery.",
+        "pt": "A economia está a mostrar sinais de recuperação.",
+        "fr": "L'économie montre des signes de reprise.",
+        "es": "La economía muestra signos de recuperación."
+      },
+      {
+        "pl": "Prezydent przemówił do narodu.",
+        "en": "The president addressed the nation.",
+        "pt": "O presidente dirigiu-se à nação.",
+        "fr": "Le président s'est adressé à la nation.",
+        "es": "El presidente se dirigió a la nación."
+      },
+      {
+        "pl": "Opozycja domaga się nowych wyborów.",
+        "en": "The opposition is calling for new elections.",
+        "pt": "A oposição apela a novas eleições.",
+        "fr": "L'opposition réclame de nouvelles élections.",
+        "es": "La oposición pide nuevas elecciones."
+      },
+      {
+        "pl": "Parlament debatuje nad nową ustawą.",
+        "en": "The parliament is debating the new law.",
+        "pt": "O parlamento está a debater a nova lei.",
+        "fr": "Le parlement débat de la nouvelle loi.",
+        "es": "El parlamento está debatiendo la nueva ley."
+      }
+    ],
+    "vocabulary": [
+      {"pl": "Rząd", "en": "Government"},
+      {"pl": "wyzwanie", "en": "challenge"},
+      {"pl": "Gospodarka", "en": "Economy"},
+      {"pl": "ożywienie", "en": "recovery"},
+      {"pl": "Prezydent", "en": "President"},
+      {"pl": "naród", "en": "nation"},
+      {"pl": "Opozycja", "en": "Opposition"},
+      {"pl": "wybory", "en": "elections"},
+      {"pl": "Parlament", "en": "Parliament"},
+      {"pl": "ustawa", "en": "law"}
+    ]
+  },
+  {
+    "id": 2,
+    "date": "2024-01-20",
+    "title": "Polish Podcast Weekly",
+    "source": "Podcast about everything",
+    "type": "podcast",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAbg8tZf9k0b8bYfoF2kH_hAoC4i-a9l3O2-6mfuuB_KjbJSxZumy4l3me5Vthum7lHHpojx9XEAPL4N0WwJ3TilJfVSrW8LqxOaHVxqCLWZbUSXqMKFFa0I1xhJMINub1qtnGBJpV82XdA8wLIHB3EDBUOtLBwDnrdywq4grW77fNdTW9kmbzU9iosxoCn6T36IpLs78IqQlhvHxjlNECRrl4Y5uueq6VM4-Xri41k5E0UTPmqxq7HFkS25h9kJwc5db8X6yzabA",
+    "audio": "https://example.com/audio/podcast1.mp3",
+    "transcript_pl": "Dzień dobry! Dzisiaj porozmawiamy o pogodzie. Jaka jest prognoza na weekend? Czy będzie słonecznie?",
+    "transcript_en": "Good morning! Today we will talk about the weather. What is the forecast for the weekend? Will it be sunny?",
+    "sentences": [
+      {
+        "pl": "Dzień dobry!",
+        "en": "Good morning!"
+      },
+      {
+        "pl": "Dzisiaj porozmawiamy o pogodzie.",
+        "en": "Today we will talk about the weather."
+      },
+      {
+        "pl": "Jaka jest prognoza na weekend?",
+        "en": "What is the forecast for the weekend?"
+      },
+      {
+        "pl": "Czy będzie słonecznie?",
+        "en": "Will it be sunny?"
+      }
+    ],
+    "vocabulary": [
+        {"pl": "Dzień dobry", "en": "Good morning"},
+        {"pl": "pogoda", "en": "weather"},
+        {"pl": "prognoza", "en": "forecast"},
+        {"pl": "weekend", "en": "weekend"},
+        {"pl": "słonecznie", "en": "sunny"}
+    ]
+  }
+]

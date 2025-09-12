@@ -1,0 +1,53 @@
+<div class="flex flex-col flex-grow">
+    <header class="flex items-center p-4 justify-between sticky top-0 bg-[var(--light-gray)] z-10">
+        <button class="text-[var(--dark-gray)]" onclick="window.history.back()">
+            <span class="material-symbols-outlined"> arrow_back_ios </span>
+        </button>
+        <h1 class="text-[var(--dark-gray)] text-lg font-bold">Flashcards</h1>
+        <div class="w-8"></div>
+    </header>
+    <main class="flex-grow overflow-y-auto px-4 pb-4">
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-[var(--dark-gray)] text-xl font-bold">Daily Playlist: 2024-01-20</h2>
+                <button class="text-[var(--dark-gray)]">
+                    <span class="material-symbols-outlined"> filter_list </span>
+                </button>
+            </div>
+            <div class="flex gap-2 pb-2 overflow-x-auto">
+                <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[var(--mustard-yellow)] px-4 text-sm font-bold text-[var(--dark-gray)]">All</button>
+                <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 text-sm font-medium text-[var(--dark-gray)]">News 1</button>
+                <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white px-4 text-sm font-medium text-[var(--dark-gray)]">Podcast 2</button>
+            </div>
+        </div>
+        <div class="perspective-1000">
+            <div class="relative w-full aspect-[3/4] flip-card" id="flashcard">
+                <div class="absolute w-full h-full rounded-2xl bg-[var(--sapphire-blue)] p-6 flex flex-col justify-between items-center text-center flip-card-front shadow-lg">
+                    <div class="self-start text-[var(--light-gray)] text-opacity-80 text-sm">From: News 1</div>
+                    <div class="flex flex-col items-center">
+                        <p class="text-white text-4xl font-bold">Dzień dobry</p>
+                        <button class="mt-2 text-[var(--mustard-yellow)]">
+                            <span class="material-symbols-outlined text-4xl"> volume_up </span>
+                        </button>
+                    </div>
+                    <p class="text-[var(--mustard-yellow)] text-sm font-semibold animate-pulse">Swipe to see translation</p>
+                </div>
+                <div class="absolute w-full h-full rounded-2xl bg-[var(--dark-gray)] p-6 flex flex-col justify-between items-center text-center flip-card-back shadow-lg">
+                    <div class="self-start text-[var(--light-gray)] text-opacity-80 text-sm">From: News 1</div>
+                    <p class="text-white text-4xl font-bold">Good morning</p>
+                    <p class="text-[var(--light-gray)] text-opacity-80 text-sm">Swipe to see original</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-6">
+            <div class="text-[var(--dark-gray)] font-semibold">1 / 15</div>
+        </div>
+        <div class="flex gap-4 mt-6">
+            <button class="flex-1 flex items-center justify-center gap-2 rounded-xl h-12 bg-white text-[var(--sapphire-blue)] text-sm font-bold border-2 border-[var(--sapphire-blue)]">
+                <span class="material-symbols-outlined"> school </span>
+                Mark as Learned
+            </button>
+            <button class="flex-1 rounded-xl h-12 bg-[var(--sapphire-blue)] text-white text-sm font-bold">Next</button>
+        </div>
+    </main>
+</div>

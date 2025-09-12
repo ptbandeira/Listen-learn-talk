@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polish Fluent</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/styles.css">
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: #0A3D62;
+            --secondary-color: #F7C324;
+            --base-color: #F5F5F5;
+            --text-color: #333333;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: var(--base-color);
+            color: var(--text-color);
+        }
+        .font-newsreader {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+</head>
+<body class="bg-[var(--base-color)] text-[var(--text-color)]">
+    <div id="app" class="relative flex size-full min-h-screen flex-col justify-between overflow-x-hidden">
+        <main id="content" class="flex-grow"></main>
+        <footer class="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-gray-200">
+            <nav class="flex justify-around items-center pt-2 pb-3">
+                <a class="flex flex-col items-center justify-end gap-1 text-[var(--primary-color)]" href="#home">
+                    <span class="material-symbols-outlined text-2xl">home</span>
+                    <p class="text-xs font-medium tracking-wide">Home</p>
+                </a>
+                <a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#flashcards">
+                    <span class="material-symbols-outlined text-2xl">style</span>
+                    <p class="text-xs font-medium tracking-wide">Flashcards</p>
+                </a>
+                <a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#sentences">
+                    <span class="material-symbols-outlined text-2xl">short_text</span>
+                    <p class="text-xs font-medium tracking-wide">Sentences</p>
+                </a>
+                <a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#dialogues">
+                    <span class="material-symbols-outlined text-2xl">forum</span>
+                    <p class="text-xs font-medium tracking-wide">Dialogues</p>
+                </a>
+                <a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#wordbook">
+                    <span class="material-symbols-outlined text-2xl">menu_book</span>
+                    <p class="text-xs font-medium tracking-wide">Wordbook</p>
+                </a>
+            </nav>
+        </footer>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
