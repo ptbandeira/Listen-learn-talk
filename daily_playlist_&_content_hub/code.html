@@ -1,0 +1,148 @@
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daily Playlist &amp; Content Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary-color: #0A3D62;
+            --secondary-color: #F7C324;
+            --base-color: #F5F5F5;
+            --text-color: #333333;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: var(--base-color);
+            color: var(--text-color);
+        }
+        .font-newsreader {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[var(--base-color)] text-[var(--text-color)]">
+<div class="relative flex size-full min-h-screen flex-col justify-between overflow-x-hidden">
+<div class="flex-grow">
+<header class="flex items-center p-4 pb-2 justify-between sticky top-0 bg-[var(--base-color)]/80 backdrop-blur-sm z-10">
+<div class="w-12"></div>
+<h1 class="text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center text-[var(--primary-color)]">Home</h1>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 text-[var(--primary-color)] gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0 hover:bg-[var(--primary-color)]/10 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<main class="p-4 space-y-6">
+<section class="rounded-xl bg-white p-4 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0 shadow-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCH7CQ2I8ymsfNAYT0_L38mHgZZigHIflIC_Gwzw-_lgzr_1bWhMftkiZa1_8c91WBvPIListSFKldgIXmwZGZDhK6Cpvt7E8g90FL4EnEFHpncDI3NM8ROfxTjNcNpDgqSVhGRee18o_J3xF1Q0eEa3QdPinacxLOgfxxEAcDKvjy_MFWvvgaHzulkjY7tv6UaeXeR8Xi5ZL8VRAcPJhFpdt0Y2pab0LrXQEJn2wxwkvMk07Rj8f_bN63CU9keVQ7ejFz1UVxQvQ");'></div>
+<div class="flex-1 min-w-0">
+<p class="text-lg font-bold leading-tight truncate font-newsreader text-[var(--primary-color)]">Polish News Today</p>
+<p class="text-gray-500 text-sm font-normal leading-normal truncate">Daily Polish News</p>
+</div>
+<button class="flex shrink-0 items-center justify-center rounded-full size-12 bg-[var(--primary-color)] text-white hover:bg-opacity-90 transition-transform duration-200 active:scale-95 shadow-lg">
+<span class="material-symbols-outlined text-3xl">play_arrow</span>
+</button>
+</div>
+</section>
+<section>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] px-0 pb-3 pt-2 font-newsreader text-[var(--primary-color)]">Today's Learning</h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between gap-4 rounded-xl bg-white p-4 shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
+<div class="flex flex-col gap-1">
+<p class="text-[var(--secondary-color)] text-sm font-medium leading-normal">New</p>
+<p class="text-[var(--text-color)] text-lg font-bold leading-tight font-newsreader">Flashcards</p>
+<p class="text-gray-500 text-sm font-normal leading-normal">Learn new words from today's news</p>
+</div>
+<div class="w-24 h-20 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbg8tZf9k0b8bYfoF2kH_hAoC4i-a9l3O2-6mfuuB_KjbJSxZumy4l3me5Vthum7lHHpojx9XEAPL4N0WwJ3TilJfVSrW8LqxOaHVxqCLWZbUSXqMKFFa0I1xhJMINub1qtnGBJpV82XdA8wLIHB3EDBUOtLBwDnrdywq4grW77fNdTW9kmbzU9iosxoCn6T36IpLs78IqQlhvHxjlNECRrl4Y5uueq6VM4-Xri41k5E0UTPmqxq7HFkS25h9kJwc5db8X6yzabA");'></div>
+</div>
+<div class="flex items-center justify-between gap-4 rounded-xl bg-white p-4 shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
+<div class="flex flex-col gap-1">
+<p class="text-[var(--secondary-color)] text-sm font-medium leading-normal">New</p>
+<p class="text-[var(--text-color)] text-lg font-bold leading-tight font-newsreader">Contextual Sentences</p>
+<p class="text-gray-500 text-sm font-normal leading-normal">Practice sentences from the news</p>
+</div>
+<div class="w-24 h-20 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDDTWnJKJQLWnJQyGVqt7fyFCYBvWuUp97dtgTGBqmiklxIHFzZK4vRaPx6pbm7RSlab-SM9iw1Px7mD0BEXg9Ev01JA04fUjK_86redNlOtNPpjrfqBcwUBOVboErq5uTUmCEYInZ1wfBQS1ZsZ0Lr331XUDpB3SQczBrNs3WMr10s_uqHEzKsK0LMQT9RbJmnDhhA_QSV8-r6Aq3xYikZdP8QsNLJV6Yj_jiopJtTTAVIHmvOwAjp_SU9b-Qi_0_h8RrUmCx5iw");'></div>
+</div>
+<div class="flex items-center justify-between gap-4 rounded-xl bg-white p-4 shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">
+<div class="flex flex-col gap-1">
+<p class="text-[var(--secondary-color)] text-sm font-medium leading-normal">New</p>
+<p class="text-[var(--text-color)] text-lg font-bold leading-tight font-newsreader">Dialogue Practice</p>
+<p class="text-gray-500 text-sm font-normal leading-normal">Interactive conversations</p>
+</div>
+<div class="w-24 h-20 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5tt120y6dVMtzPhvNOs1sQEG6_fNBUeetluFNtRmnBI8u7uCK9I_MZmD7kOqDhb1dI9WCJJSInD7lQSZHoToKOJlKbqSiikFfSBrFeGojoVVopAcPWgqYiAyg7zfNN7cTmbiSBi922HcjkfYLVIzTzW9DIgcnelDwWHIhL8UJidDQM0NmcNoumZoAweUSctp8kXrZEQOfmpoYFHfCp-_DjDAXpMw6gyQiZcQ_FL0G58Ey0jMcEGqAT3jv7370VevNbCDVz9fqdA");'></div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] px-0 pb-3 pt-2 font-newsreader text-[var(--primary-color)]">Progress</h2>
+<div class="flex flex-col gap-2">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-[var(--text-color)] text-base font-medium leading-normal">Daily Goal</p>
+<p class="text-gray-500 text-sm font-medium leading-normal">60%</p>
+</div>
+<div class="rounded-full bg-gray-200 h-2.5">
+<div class="h-2.5 rounded-full bg-[var(--secondary-color)]" style="width: 60%;"></div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] px-0 pb-3 pt-2 font-newsreader text-[var(--primary-color)]">Quick Access</h2>
+<div class="space-y-3">
+<a class="flex items-center gap-4 bg-white p-4 rounded-xl hover:bg-gray-50 transition-colors shadow-sm" href="#">
+<div class="text-white flex items-center justify-center rounded-lg bg-[var(--primary-color)] shrink-0 size-10">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<p class="text-[var(--text-color)] text-base font-medium leading-normal flex-1 truncate">My Wordbook</p>
+<div class="shrink-0 text-gray-400">
+<span class="material-symbols-outlined text-base">arrow_forward_ios</span>
+</div>
+</a>
+<a class="flex items-center gap-4 bg-white p-4 rounded-xl hover:bg-gray-50 transition-colors shadow-sm" href="#">
+<div class="text-white flex items-center justify-center rounded-lg bg-[var(--primary-color)] shrink-0 size-10">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<p class="text-[var(--text-color)] text-base font-medium leading-normal flex-1 truncate">Goals &amp; Reminders</p>
+<div class="shrink-0 text-gray-400">
+<span class="material-symbols-outlined text-base">arrow_forward_ios</span>
+</div>
+</a>
+</div>
+</section>
+</main>
+</div>
+<footer class="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-gray-200">
+<nav class="flex justify-around items-center pt-2 pb-3">
+<a class="flex flex-col items-center justify-end gap-1 text-[var(--primary-color)]" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<p class="text-xs font-medium tracking-wide">Home</p>
+</a>
+<a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">style</span>
+<p class="text-xs font-medium tracking-wide">Flashcards</p>
+</a>
+<a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">short_text</span>
+<p class="text-xs font-medium tracking-wide">Sentences</p>
+</a>
+<a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">forum</span>
+<p class="text-xs font-medium tracking-wide">Dialogues</p>
+</a>
+<a class="flex flex-col items-center justify-end gap-1 text-gray-500 hover:text-[var(--primary-color)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">menu_book</span>
+<p class="text-xs font-medium tracking-wide">Wordbook</p>
+</a>
+</nav>
+</footer>
+</div>
+
+</body></html>
