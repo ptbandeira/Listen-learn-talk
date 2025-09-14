@@ -1,41 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
-const aiService = require('./ai-service');
-const db = require('./db');
-const contentRepository = require('./content-repository');
 
 const app = express();
-// Use the PORT environment variable from the IDE, with a fallback
-const port = process.env.PORT || 3001;
-
-// Serve static files from the project root (e.g., index.html, js/, css/)
-app.use(express.static(path.join(__dirname, '..')));
+const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/generate-content', async (req, res) => {
-  try {
-    const content = await aiService.generateContent();
-    // Super simple parsing, assuming the format is always the same
-    const [polish, english] = content.split('\n\n'); 
-    await contentRepository.saveContent(polish, english);
-    res.json({ content: { polish_text: polish, english_text: english } });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to generate content' });
-  }
-});
+// API routes
+const flashcards = require('./api/flashcards');
+const sentences = require('./api/sentences');
+const dialogues = require('./api/dialogues');
+const wordbook = require('./api/wordbook');
 
-app.get('/api/content', async (req, res) => {
-  try {
-    const content = await contentRepository.getLatestContent();
-    res.json({ content });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve content' });
-  }
-});
+app.get('/api/flashcards', flashcards);
+app.get('/api/sentences', sentences);
+app.get('/api/dialogues', dialogues);
+app.get('/api/wordbook', wordbook);
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
