@@ -30,6 +30,7 @@
         };
         backend = {
           command = [ "npm" "run" "dev" "--prefix" "backend" ];
+          manager = "web";
         };
       };
     };
