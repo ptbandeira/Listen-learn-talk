@@ -9,8 +9,8 @@
     # pkgs.go
     # pkgs.python311
     # pkgs.python311Packages.pip
-    # pkgs.nodejs_20
-    # pkgs.nodePackages.nodemon
+    pkgs.nodejs_20
+    pkgs.nodePackages.nodemon
   ];
 
   # Sets environment variables in the workspace
@@ -28,27 +28,31 @@
         # web = {
         #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
         #   # and show it in IDX's web preview panel
-        #   command = ["npm" "run" "dev"];
-        #   manager = "web";
-        #   env = {
-        #     # Environment variables to set for your server
-        #     PORT = "$PORT";
-        #   };
-        # };
+        web = {
+          command = ["npm", "install", "&&", "npm", "run", "dev"];
+          manager = "web";
+          env = {
+            PORT = "$PORT";
+          };
+        };
       };
     };
 
-    # Workspace lifecycle hooks
+    # Workspace Lifecycle hooks
     workspace = {
-      # Runs when a workspace is first created
+      # Runs when the workspace is first created
       onCreate = {
-        # Example: install JS dependencies from NPM
-        # npm-install = "npm install";
+        # Example: install npm dependencies and run a dev server
+        # web-preview = ''
+        #   npm install && npm run dev
+        # '';
       };
-      # Runs when the workspace is (re)started
+      # Runs when the workspace is started
       onStart = {
-        # Example: start a background task to watch and re-build backend code
-        # watch-backend = "npm run watch-backend";
+        # Example: start a background task
+        # web-preview = ''
+        #   npm run dev
+        # '';
       };
     };
   };
