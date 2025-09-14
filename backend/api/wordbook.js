@@ -1,0 +1,10 @@
+const wordbook = [
+    { "polish_word": "Dom", "english_translation": "House" },
+    { "polish_word": "Samochód", "english_translation": "Car" },
+    { "polish_word": "Komputer", "english_translation": "Computer" },
+    { "polish_word": "Książka", "english_translation": "Book" }
+];
+
+module.exports = (req, res) => {
+    res.json(wordbook);
+};
