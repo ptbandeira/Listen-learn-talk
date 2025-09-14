@@ -4,7 +4,7 @@ async function initHome() {
   const contentSection = document.getElementById('content-section');
 
   try {
-    const data = await fetchData('http://localhost:3000/api/content');
+    const data = await fetchData('http://localhost:3001/api/content');
     if (data.content) {
       displayContent(data.content, contentSection);
     } else {
@@ -18,7 +18,7 @@ async function initHome() {
   const generateButton = document.getElementById('generate-btn');
   generateButton.addEventListener('click', async () => {
     try {
-      const newData = await fetchData('http://localhost:3000/api/generate-content', { method: 'POST' });
+      const newData = await fetchData('http://localhost:3001/api/generate-content', { method: 'POST' });
       displayContent(newData.content, contentSection);
     } catch (error) {
       console.error('Error generating content:', error);
