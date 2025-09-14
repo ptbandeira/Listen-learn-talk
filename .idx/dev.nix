@@ -24,7 +24,7 @@
           port = 8000;
           command = ["python3", "-m", "http.server", "8000"];
           manager = "web";
-        }
+        },
         {
           id = "backend";
           port = 3000;
@@ -35,24 +35,6 @@
     extensions = [
       "vscode.git",
       "github.copilot",
-    ];
-  };
-
-  # Enable previews and customize configuration
-  previews = {
-    enable = true;
-    previews = [
-      {
-        id = "web";
-        port = 8000;
-        command = ["python3", "-m", "http.server", "8000"];
-        manager = "web";
-      }
-      {
-        id = "backend";
-        port = 3000;
-        command = ["npm", "run", "dev", "--prefix", "backend"];
-      }
     ];
   };
 }
