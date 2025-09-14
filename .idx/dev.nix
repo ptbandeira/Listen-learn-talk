@@ -29,9 +29,8 @@
           manager = "web";
         };
         backend = {
-          command = [ "npm" "run" "dev" "--prefix" "backend" ];
+          command = [ "node" "backend/server.js" ];
           manager = "web";
-          port = 3001;
         };
       };
     };
