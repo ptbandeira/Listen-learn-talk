@@ -4,7 +4,6 @@ async function initHome() {
   const contentSection = document.getElementById('content-section');
 
   try {
-    // Use a relative URL, which will be handled by our backend server
     const data = await fetchData('/api/content');
     if (data.content) {
       displayContent(data.content, contentSection);
@@ -19,7 +18,6 @@ async function initHome() {
   const generateButton = document.getElementById('generate-btn');
   generateButton.addEventListener('click', async () => {
     try {
-      // Use a relative URL for the API endpoint
       const newData = await fetchData('/api/generate-content', { method: 'POST' });
       displayContent(newData.content, contentSection);
     } catch (error) {
