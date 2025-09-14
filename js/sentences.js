@@ -1,83 +1,60 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const sentencesContainer = document.querySelector('.mt-6.space-y-4');
-    const sourceTitle = document.querySelector('.font-semibold');
+import { fetchData } from './utils.js';
 
-    async function fetchContent() {
-        try {
-            const response = await fetch('http://localhost:3000/api/content');
-            if (!response.ok) {
-                throw new Error('Failed to fetch content');
+let sentences = [];
+let currentSentenceIndex = 0;
+
+async function initSentences() {
+    const sentenceContainer = document.getElementById('sentence-container');
+    const nextBtn = document.getElementById('next-sentence-btn');
+
+    try {
+        sentences = await fetchData('/api/sentences');
+        if (sentences.length > 0) {
+            displaySentence();
+        } else {
+            sentenceContainer.innerHTML = '<p>No sentences available.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching sentences:', error);
+        sentenceContainer.innerHTML = '<p>Error loading sentences.</p>';
+    }
+
+    nextBtn.addEventListener('click', () => {
+        currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+        displaySentence();
+    });
+}
+
+function displaySentence() {
+    const sentence = sentences[currentSentenceIndex];
+    const sentenceContainer = document.getElementById('sentence-container');
+
+    const sentenceHTML = `
+        <p class="text-xl mb-4">${sentence.polish_sentence.replace('___', '<span class="font-bold text-[var(--primary-color)]">___</span>')}</p>
+        <div class="flex flex-col gap-2">
+            ${sentence.options.map(option => `<button class="option-btn p-3 bg-gray-100 rounded-lg text-left hover:bg-gray-200">${option}</button>`).join('')}
+        </div>
+        <p id="feedback" class="mt-4"></p>
+    `;
+
+    sentenceContainer.innerHTML = sentenceHTML;
+
+    const optionButtons = document.querySelectorAll('.option-btn');
+    optionButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedOption = button.textContent;
+            const feedback = document.getElementById('feedback');
+            if (selectedOption === sentence.correct_answer) {
+                feedback.textContent = 'Correct!';
+                feedback.classList.add('text-green-600');
+                feedback.classList.remove('text-red-600');
+            } else {
+                feedback.textContent = 'Incorrect. Try again.';
+                feedback.classList.add('text-red-600');
+                feedback.classList.remove('text-green-600');
             }
-            const content = await response.json();
-            return content;
-        } catch (error) {
-            console.error('Error fetching content:', error);
-            return [];
-        }
-    }
+        });
+    });
+}
 
-    function renderSentences(content) {
-        if (content.length > 0) {
-            const dailyContent = content[0]; // For now, just use the first item
-            sourceTitle.textContent = `'${dailyContent.title}'`;
-            sentencesContainer.innerHTML = ''; // Clear existing sentences
-
-            dailyContent.sentences.forEach(sentence => {
-                const sentenceEl = document.createElement('div');
-                sentenceEl.className = 'flex flex-col gap-3 rounded-lg bg-[#1C2327] p-4';
-
-                let translationsHTML = '';
-                if(sentence.pt && sentence.fr && sentence.es) {
-                    translationsHTML = `
-                        <div class="absolute left-0 top-full mt-2 hidden rounded-md bg-[#283339] p-2 text-sm text-white/90 group-focus-within:block">
-                            <p>${sentence.pt} (PT)</p>
-                            <p>${sentence.fr} (FR)</p>
-                            <p>${sentence.es} (ES)</p>
-                        </div>
-                    `;
-                }
-
-                sentenceEl.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <button class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--primary-color)] text-white">
-                            <span class="material-symbols-outlined text-3xl">play_arrow</span>
-                        </button>
-                        <div class="flex-1">
-                            <p class="font-['Newsreader'] text-xl text-white">${sentence.pl}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-base text-white/70">${sentence.en}</p>
-                        <div class="group relative">
-                            <button class="mt-2 text-sm text-[var(--primary-color)]">Show translations</button>
-                            ${translationsHTML}
-                        </div>
-                    </div>
-                `;
-                sentencesContainer.appendChild(sentenceEl);
-
-                const playButton = sentenceEl.querySelector('button');
-                playButton.addEventListener('click', () => {
-                    console.log(`Playing audio for: ${sentence.pl}`);
-                    // Here you would implement the actual audio playback
-                });
-
-                const showTranslationsButton = sentenceEl.querySelector('.group.relative button');
-                const translationsContainer = sentenceEl.querySelector('.group.relative div');
-                if(showTranslationsButton && translationsContainer) {
-                    showTranslationsButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        translationsContainer.classList.toggle('hidden');
-                    });
-                }
-            });
-        }
-    }
-
-    async function init() {
-        const content = await fetchContent();
-        renderSentences(content);
-    }
-
-    init();
-});
+export { initSentences };

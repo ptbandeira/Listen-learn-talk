@@ -1,87 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const scenariosContainer = document.querySelector('.flex.overflow-x-auto');
-    const startButton = document.querySelector('.flex.min-w-\\[84px\\].max-w-\\[480px\\]');
-    const viewTranscriptButton = document.querySelector('a[href="#"]'); // This needs to be more specific
-    const viewTranslationsButton = document.querySelectorAll('a[href="#"]')[1]; // This needs to be more specific
+import { fetchData } from './utils.js';
 
-    let dialogues = [];
-    let selectedDialogue = null;
+let dialogues = [];
+let currentDialogueIndex = 0;
 
-    async function fetchDialogues() {
-        try {
-            const response = await fetch('http://localhost:3000/api/dialogues');
-            if (!response.ok) {
-                throw new Error('Failed to fetch dialogues');
-            }
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching dialogues:', error);
-            return [];
+async function initDialogues() {
+    const dialogueContainer = document.getElementById('dialogue-container');
+    const nextBtn = document.getElementById('next-dialogue-btn');
+
+    try {
+        dialogues = await fetchData('/api/dialogues');
+        if (dialogues.length > 0) {
+            displayDialogue();
+        } else {
+            dialogueContainer.innerHTML = '<p>No dialogues available.</p>';
         }
+    } catch (error) {
+        console.error('Error fetching dialogues:', error);
+        dialogueContainer.innerHTML = '<p>Error loading dialogues.</p>';
     }
 
-    function renderScenarios(dialogues) {
-        scenariosContainer.innerHTML = '';
-        dialogues.forEach((dialogue, index) => {
-            const scenarioEl = document.createElement('div');
-            scenarioEl.className = 'flex flex-col gap-3 rounded-xl min-w-48 flex-shrink-0';
-            scenarioEl.innerHTML = `
-                <div class="relative w-full aspect-square rounded-xl overflow-hidden shadow-lg">
-                    <div class="absolute inset-0 bg-center bg-no-repeat bg-cover" style='background-image: url("${dialogue.image}");'></div>
-                    <div class="absolute inset-0 bg-black/20"></div>
-                </div>
-                <div>
-                    <p class="text-white text-base font-bold leading-normal">${dialogue.title}</p>
-                    <p class="text-[#9eb7a8] text-sm font-normal leading-normal">${dialogue.description}</p>
-                </div>
-            `;
-            scenarioEl.addEventListener('click', () => {
-                selectedDialogue = dialogue;
-                // Add a visual indicator for the selected dialogue
-                document.querySelectorAll('.min-w-48').forEach(el => el.classList.remove('border-2', 'border-[var(--primary-color)]'));
-                scenarioEl.classList.add('border-2', 'border-[var(--primary-color)]');
-            });
-            scenariosContainer.appendChild(scenarioEl);
-
-            if(index === 0) {
-                scenarioEl.click();
-            }
-        });
-    }
-
-    startButton.addEventListener('click', () => {
-        if (selectedDialogue) {
-            alert('Audio recording is not available in this environment. This is a placeholder for the recording functionality.');
-        } else {
-            alert('Please select a dialogue scenario first.');
-        }
+    nextBtn.addEventListener('click', () => {
+        currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
+        displayDialogue();
     });
+}
 
-    viewTranscriptButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (selectedDialogue) {
-            let transcript = selectedDialogue.transcript.map(line => `${line.speaker}: ${line.line_pl}`).join('\n');
-            alert(`Transcript:\n\n${transcript}`);
-        } else {
-            alert('Please select a dialogue scenario first.');
-        }
-    });
+function displayDialogue() {
+    const dialogue = dialogues[currentDialogueIndex];
+    const dialogueContainer = document.getElementById('dialogue-container');
 
-    viewTranslationsButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (selectedDialogue) {
-            let translations = selectedDialogue.transcript.map(line => `${line.speaker}: ${line.line_en}`).join('\n');
-            alert(`Translations:\n\n${translations}`);
-        } else {
-            alert('Please select a dialogue scenario first.');
-        }
-    });
+    const dialogueHTML = `
+        <div class="mb-4">
+            <audio controls class="w-full">
+                <source src="${dialogue.audio_file}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div>
+            ${dialogue.conversation.map(line => `<p><span class="font-bold">${line.speaker}:</span> ${line.line}</p>`).join('')}
+        </div>
+    `;
 
-    async function init() {
-        dialogues = await fetchDialogues();
-        renderScenarios(dialogues);
-    }
+    dialogueContainer.innerHTML = dialogueHTML;
+}
 
-    init();
-});
+export { initDialogues };

@@ -1,96 +1,11 @@
-<div class="flex-grow">
-    <div class="flex items-center bg-[#1A202C] p-4 pb-2 justify-between sticky top-0 z-10">
-        <button class="text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/10 transition-colors" onclick="window.history.back()">
-            <span class="material-symbols-outlined"> arrow_back </span>
-        </button>
-        <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">My Wordbook</h2>
-    </div>
-    <div class="px-4 py-3 sticky top-[72px] z-10 bg-[#1A202C]">
-        <div class="relative">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span class="material-symbols-outlined text-gray-400"> search </span>
-            </div>
-            <input class="form-input w-full rounded-full border-0 bg-[#2D3748] py-3 pl-10 pr-4 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50" placeholder="Search word" type="text">
+<div class="flex-grow flex flex-col items-center p-6">
+    <div class="max-w-4xl w-full">
+        <h1 class="text-3xl font-bold text-center mb-6 text-[var(--primary-color)]">My Wordbook</h1>
+        <div class="mb-4">
+            <input type="text" id="search-word" placeholder="Search for a word..." class="w-full p-3 border border-gray-300 rounded-lg">
+        </div>
+        <div id="wordbook-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Wordbook content will be loaded here -->
         </div>
     </div>
-    <div class="flex items-center justify-between px-4 py-2 mt-2">
-        <p class="text-sm font-medium text-gray-400">All words</p>
-        <button class="flex items-center gap-1 text-sm font-medium text-[var(--primary-color)]">
-            <span class="material-symbols-outlined text-base"> filter_list </span>
-            Filter
-        </button>
-    </div>
-    <div class="divide-y divide-gray-700/50">
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Książka</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">book</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Czytać</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">to read</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Piękny</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">beautiful</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Miasto</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">city</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Mówić</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">to speak</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-        <div class="flex items-center gap-4 bg-[#1A202C] px-4 py-4 justify-between hover:bg-gray-800 transition-colors duration-200">
-            <div class="flex-grow">
-                <p class="text-white text-lg font-medium leading-normal">Duży</p>
-                <p class="text-gray-400 text-sm font-normal leading-normal">big / large</p>
-            </div>
-            <div class="shrink-0">
-                <button class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined"> volume_up </span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="fixed bottom-0 right-0 p-6">
-    <button class="flex items-center justify-center rounded-full h-16 w-16 bg-[var(--primary-color)] text-white shadow-lg hover:bg-[var(--primary-color)]/90 transition-colors">
-        <span class="material-symbols-outlined text-3xl"> add </span>
-    </button>
 </div>
