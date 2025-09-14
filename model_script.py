@@ -1,6 +1,11 @@
-from transformers import pipeline
+import requests
 
-classifier = pipeline('sentiment-analysis')
+API_URL = "https://api-inference.huggingface.co/models/distilbert-base-uncased-finetuned-sst-2-english"
+headers = {"Authorization": "Bearer <"}
 
-result = classifier('I love using Hugging Face!')
-print(result)
+def query(payload):
+    response = requests.post(API_URL, headers=headers, json=payload)
+    return response.json()
+
+data = query({"inputs": "I love using Hugging Face!"})
+print(data)
