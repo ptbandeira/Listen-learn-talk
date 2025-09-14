@@ -6,10 +6,7 @@
 
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    pkgs.python311
-    pkgs.python311Packages.pip
     pkgs.nodejs_20
-    pkgs.nodePackages.nodemon
   ];
 
   # Sets environment variables in the workspace
@@ -24,11 +21,8 @@
     previews = {
       enable = true;
       previews = {
+        # The backend now serves everything, so we only need one preview
         web = {
-          command = [ "python3" "-m" "http.server" "8000" ];
-          manager = "web";
-        };
-        backend = {
           command = [ "node" "backend/server.js" ];
           manager = "web";
         };

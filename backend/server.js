@@ -1,12 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 const aiService = require('./ai-service');
 const db = require('./db');
 const contentRepository = require('./content-repository');
 
 const app = express();
-const port = 3001;
+// Use the PORT environment variable from the IDE, with a fallback
+const port = process.env.PORT || 3001;
+
+// Serve static files from the project root (e.g., index.html, js/, css/)
+app.use(express.static(path.join(__dirname, '..')));
 
 app.use(cors());
 app.use(bodyParser.json());
