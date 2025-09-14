@@ -4,7 +4,8 @@ async function initHome() {
   const contentSection = document.getElementById('content-section');
 
   try {
-    const data = await fetchData('http://localhost:3001/api/content');
+    // Use a relative URL, which will be handled by our backend server
+    const data = await fetchData('/api/content');
     if (data.content) {
       displayContent(data.content, contentSection);
     } else {
@@ -18,7 +19,8 @@ async function initHome() {
   const generateButton = document.getElementById('generate-btn');
   generateButton.addEventListener('click', async () => {
     try {
-      const newData = await fetchData('http://localhost:3001/api/generate-content', { method: 'POST' });
+      // Use a relative URL for the API endpoint
+      const newData = await fetchData('/api/generate-content', { method: 'POST' });
       displayContent(newData.content, contentSection);
     } catch (error) {
       console.error('Error generating content:', error);
