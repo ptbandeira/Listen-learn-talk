@@ -1,47 +1,36 @@
 import { fetchData } from './utils.js';
 
-let flashcards = [];
-let currentCardIndex = 0;
-
-async function initFlashcards() {
+export function initFlashcards() {
     const flashcardContainer = document.getElementById('flashcard-container');
-    const flashcardFront = document.getElementById('flashcard-front');
-    const flashcardBack = document.getElementById('flashcard-back');
-    const flipBtn = document.getElementById('flip-btn');
-    const nextBtn = document.getElementById('next-btn');
+    const newFlashcardBtn = document.getElementById('new-flashcard-btn');
 
-    try {
-        flashcards = await fetchData('/api/flashcards');
-        if (flashcards.length > 0) {
-            displayFlashcard();
-        } else {
-            flashcardFront.innerHTML = '<p>No flashcards available.</p>';
-            flashcardBack.innerHTML = '<p>No flashcards available.</p>';
-        }
-    } catch (error) {
-        console.error('Error fetching flashcards:', error);
-        flashcardFront.innerHTML = '<p>Error loading flashcards.</p>';
-        flashcardBack.innerHTML = '<p>Error loading flashcards.</p>';
+    let flashcards = [];
+    let currentCard = 0;
+
+    async function loadFlashcards() {
+        flashcards = await fetchData('http://localhost:3000/api/flashcards');
+        renderFlashcard();
     }
 
-    flipBtn.addEventListener('click', () => {
-        flashcardContainer.classList.toggle('[transform:rotateY(180deg)]');
+    function renderFlashcard() {
+        if (currentCard >= flashcards.length) {
+            flashcardContainer.innerHTML = '<p>No more flashcards!</p>';
+            return;
+        }
+
+        const card = flashcards[currentCard];
+        flashcardContainer.innerHTML = `
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                <p class="text-2xl font-bold">${card.polish_word}</p>
+                <p class="text-gray-600">${card.english_translation}</p>
+            </div>
+        `;
+    }
+
+    newFlashcardBtn.addEventListener('click', () => {
+        currentCard++;
+        renderFlashcard();
     });
 
-    nextBtn.addEventListener('click', () => {
-        currentCardIndex = (currentCardIndex + 1) % flashcards.length;
-        flashcardContainer.classList.remove('[transform:rotateY(180deg)]');
-        setTimeout(displayFlashcard, 250); // Wait for the card to flip back
-    });
+    loadFlashcards();
 }
-
-function displayFlashcard() {
-    const flashcard = flashcards[currentCardIndex];
-    const flashcardFront = document.getElementById('flashcard-front');
-    const flashcardBack = document.getElementById('flashcard-back');
-
-    flashcardFront.innerHTML = `<p class="text-2xl">${flashcard.polish_word}</p>`
-    flashcardBack.innerHTML = `<p class="text-2xl">${flashcard.english_translation}</p>`
-}
-
-export { initFlashcards };
