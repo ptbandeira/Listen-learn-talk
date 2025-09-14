@@ -8,27 +8,27 @@ import { initHome } from './home.js';
 const routes = {
   '#home': {
     path: '/',
-    template: 'templates/home.html',
+    template: 'views/home.html',
     init: initHome,
   },
   '#flashcards': {
     path: '/flashcards',
-    template: 'templates/flashcards.html',
+    template: 'views/flashcards.html',
     // init: initFlashcards,
   },
   '#sentences': {
     path: '/sentences',
-    template: 'templates/sentences.html',
+    template: 'views/sentences.html',
     // init: initSentences,
   },
   '#dialogues': {
     path: '/dialogues',
-    template: 'templates/dialogues.html',
+    template: 'views/dialogues.html',
     // init: initDialogues,
   },
   '#wordbook': {
     path: '/wordbook',
-    template: 'templates/wordbook.html',
+    template: 'views/wordbook.html',
     // init: initWordbook,
   },
 };
