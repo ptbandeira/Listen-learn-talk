@@ -1,14 +1,16 @@
-<div class="container">
-  <div class="header">
-    <h1>Polish Your Polish</h1>
-    <p>Your daily dose of Polish language learning</p>
-  </div>
+<div class="flex-grow flex flex-col items-center justify-center p-6 text-center">
+    <div class="max-w-2xl w-full">
+        <h1 class="font-newsreader text-6xl font-bold text-[var(--primary-color)]">Polish Your Polish</h1>
+        <p class="mt-2 text-lg text-gray-600">Your daily dose of Polish language learning</p>
 
-  <div class="content-box">
-    <h2>Today's Phrase</h2>
-    <div id="content-section">
-      <!-- AI-generated content will be displayed here -->
+        <div class="mt-10 p-8 bg-white rounded-2xl shadow-lg text-left">
+            <h2 class="text-2xl font-semibold text-[var(--primary-color)]">Today's Phrase</h2>
+            <div id="content-section" class="mt-4 text-gray-800 space-y-4">
+                <!-- AI-generated content will be displayed here -->
+            </div>
+            <button id="generate-btn" class="mt-6 w-full px-6 py-3 bg-[var(--primary-color)] text-white font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition-colors duration-300">
+                Generate New Content
+            </button>
+        </div>
     </div>
-    <button id="generate-btn" class="btn">Generate New Content</button>
-  </div>
 </div>

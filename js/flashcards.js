@@ -1,113 +1,47 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const flashcard = document.getElementById('flashcard');
-    const flashcardFrontText = document.querySelector('.flip-card-front .text-4xl');
-    const flashcardBackText = document.querySelector('.flip-card-back .text-4xl');
-    const sourceText = document.querySelector('.flip-card-front .text-sm');
-    const nextButton = document.querySelector('.flex-1.rounded-xl.h-12.bg-\\[var\\(--sapphire-blue\\)\\]');
-    const markAsLearnedButton = document.querySelector('.flex-1.flex.items-center.justify-center');
-    const progressText = document.querySelector('.text-\\[var\\(--dark-gray\\)\\].font-semibold');
+import { fetchData } from './utils.js';
 
-    let vocabulary = [];
-    let currentIndex = 0;
-    let isFlipping = false;
-    let learnedWords = [];
+let flashcards = [];
+let currentCardIndex = 0;
 
-    async function fetchVocabulary() {
-        try {
-            const response = await fetch('http://localhost:3000/api/vocabulary');
-            if (!response.ok) {
-                throw new Error('Failed to fetch vocabulary');
-            }
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching vocabulary:', error);
-            return [];
-        }
-    }
+async function initFlashcards() {
+    const flashcardContainer = document.getElementById('flashcard-container');
+    const flashcardFront = document.getElementById('flashcard-front');
+    const flashcardBack = document.getElementById('flashcard-back');
+    const flipBtn = document.getElementById('flip-btn');
+    const nextBtn = document.getElementById('next-btn');
 
-    async function fetchLearnedWords() {
-        try {
-            const response = await fetch('http://localhost:3000/api/learned-words');
-            if (!response.ok) {
-                throw new Error('Failed to fetch learned words');
-            }
-            learnedWords = await response.json();
-        } catch (error) {
-            console.error('Error fetching learned words:', error);
-        }
-    }
-
-    function renderCard() {
-        if (vocabulary.length > 0) {
-            const currentWord = vocabulary[currentIndex];
-            flashcardFrontText.textContent = currentWord.pl;
-            flashcardBackText.textContent = currentWord.en;
-            progressText.textContent = `${currentIndex + 1} / ${vocabulary.length}`;
-            flashcard.classList.remove('flipped');
-            updateLearnedButton(currentWord.pl);
-        }
-    }
-
-    function updateLearnedButton(word) {
-        if (learnedWords.includes(word)) {
-            markAsLearnedButton.textContent = 'Learned!';
-            markAsLearnedButton.classList.add('bg-green-500', 'text-white');
-            markAsLearnedButton.disabled = true;
+    try {
+        flashcards = await fetchData('/api/flashcards');
+        if (flashcards.length > 0) {
+            displayFlashcard();
         } else {
-            markAsLearnedButton.textContent = 'Mark as Learned';
-            markAsLearnedButton.classList.remove('bg-green-500', 'text-white');
-            markAsLearnedButton.disabled = false;
+            flashcardFront.innerHTML = '<p>No flashcards available.</p>';
+            flashcardBack.innerHTML = '<p>No flashcards available.</p>';
         }
+    } catch (error) {
+        console.error('Error fetching flashcards:', error);
+        flashcardFront.innerHTML = '<p>Error loading flashcards.</p>';
+        flashcardBack.innerHTML = '<p>Error loading flashcards.</p>';
     }
 
-    async function toggleLearnedStatus() {
-        const currentWord = vocabulary[currentIndex].pl;
-        if (!learnedWords.includes(currentWord)) {
-            try {
-                const response = await fetch('http://localhost:3000/api/learned-words', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ word: currentWord }),
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to mark word as learned');
-                }
-                learnedWords = await response.json();
-                updateLearnedButton(currentWord);
-            } catch (error) {
-                console.error('Error marking word as learned:', error);
-            }
-        }
-    }
+    flipBtn.addEventListener('click', () => {
+        flashcardContainer.classList.toggle('[transform:rotateY(180deg)]');
+    });
 
-    function nextCard() {
-        if (vocabulary.length > 0) {
-            currentIndex = (currentIndex + 1) % vocabulary.length;
-            renderCard();
-        }
-    }
+    nextBtn.addEventListener('click', () => {
+        currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+        flashcardContainer.classList.remove('[transform:rotateY(180deg)]');
+        setTimeout(displayFlashcard, 250); // Wait for the card to flip back
+    });
+}
 
-    function flipCard() {
-        if (isFlipping) return;
-        isFlipping = true;
-        flashcard.classList.toggle('flipped');
-        setTimeout(() => {
-            isFlipping = false;
-        }, 600);
-    }
+function displayFlashcard() {
+    const flashcard = flashcards[currentCardIndex];
+    const flashcardFront = document.getElementById('flashcard-front');
+    const flashcardBack = document.getElementById('flashcard-back');
 
-    flashcard.addEventListener('click', flipCard);
-    nextButton.addEventListener('click', nextCard);
-    markAsLearnedButton.addEventListener('click', toggleLearnedStatus);
+    flashcardFront.innerHTML = `<p class="text-2xl">${flashcard.polish_word}</p>`
+    flashcardBack.innerHTML = `<p class="text-2xl">${flashcard.english_translation}</p>`
+}
 
-    async function init() {
-        await fetchLearnedWords();
-        vocabulary = await fetchVocabulary();
-        renderCard();
-    }
-
-    init();
-});
+export { initFlashcards };
