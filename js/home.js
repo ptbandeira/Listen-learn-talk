@@ -1,4 +1,4 @@
-import { fetchData } from '../utils.js';
+import { fetchData } from './utils.js';
 
 async function initHome() {
   const contentSection = document.getElementById('content-section');
