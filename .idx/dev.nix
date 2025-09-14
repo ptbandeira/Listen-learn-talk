@@ -7,8 +7,8 @@
   # Use https://search.nixos.org/packages to find packages
   packages = [
     # pkgs.go
-    # pkgs.python311
-    # pkgs.python311Packages.pip
+    pkgs.python311
+    pkgs.python311Packages.pip
     pkgs.nodejs_20
     pkgs.nodePackages.nodemon
   ];
@@ -16,44 +16,43 @@
   # Sets environment variables in the workspace
   env = {};
   idx = {
-    # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
-    extensions = [
-      # "vscodevim.vim"
-    ];
-
-    # Enable previews
     previews = {
       enable = true;
-      previews = {
-        # web = {
-        #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
-        #   # and show it in IDX's web preview panel
-        web = {
-          command = ["npm", "install", "&&", "npm", "run", "dev"];
+      previews = [
+        {
+          id = "web";
+          port = 8000;
+          command = ["python3", "-m", "http.server", "8000"];
           manager = "web";
-          env = {
-            PORT = "$PORT";
-          };
-        };
-      };
+        }
+        {
+          id = "backend";
+          port = 3000;
+          command = ["npm", "run", "dev", "--prefix", "backend"];
+        }
+      ];
     };
+    extensions = [
+      "vscode.git",
+      "github.copilot",
+    ];
+  };
 
-    # Workspace Lifecycle hooks
-    workspace = {
-      # Runs when the workspace is first created
-      onCreate = {
-        # Example: install npm dependencies and run a dev server
-        # web-preview = ''
-        #   npm install && npm run dev
-        # '';
-      };
-      # Runs when the workspace is started
-      onStart = {
-        # Example: start a background task
-        # web-preview = ''
-        #   npm run dev
-        # '';
-      };
-    };
+  # Enable previews and customize configuration
+  previews = {
+    enable = true;
+    previews = [
+      {
+        id = "web";
+        port = 8000;
+        command = ["python3", "-m", "http.server", "8000"];
+        manager = "web";
+      }
+      {
+        id = "backend";
+        port = 3000;
+        command = ["npm", "run", "dev", "--prefix", "backend"];
+      }
+    ];
   };
 }
