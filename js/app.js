@@ -1,36 +1,11 @@
 import { initHome } from './home.js';
-// Import other page initialization functions as they are created
-// import { initFlashcards } from './flashcards.js';
-// import { initSentences } from './sentences.js';
-// import { initDialogues } from './dialogues.js';
-// import { initWordbook } from './wordbook.js';
 
 const routes = {
   '#home': {
-    path: '/',
     template: 'views/home.html',
     init: initHome,
   },
-  '#flashcards': {
-    path: '/flashcards',
-    template: 'views/flashcards.html',
-    // init: initFlashcards,
-  },
-  '#sentences': {
-    path: '/sentences',
-    template: 'views/sentences.html',
-    // init: initSentences,
-  },
-  '#dialogues': {
-    path: '/dialogues',
-    template: 'views/dialogues.html',
-    // init: initDialogues,
-  },
-  '#wordbook': {
-    path: '/wordbook',
-    template: 'views/wordbook.html',
-    // init: initWordbook,
-  },
+  // Other routes will be added here later
 };
 
 const content = document.getElementById('content');

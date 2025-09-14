@@ -1,8 +1,84 @@
-body {
-    margin: 0;
-    font-family: sans-serif;
+/* Add your custom styles here */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-#app {
-    padding-bottom: 80px; /* Add padding to the bottom to avoid content being hidden by the nav bar */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 3em;
+    color: #333;
+}
+
+.header p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.content-box {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-box h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#content-section {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #444;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.polish-phrase h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Navigation styles */
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+nav a {
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+}
+
+nav a.active {
+    color: #007bff;
 }
