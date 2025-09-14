@@ -15,16 +15,35 @@ const routes = {
 const content = document.getElementById('content');
 
 async function router() {
+  console.log("Router function called");
   const hash = window.location.hash || '#home';
+  console.log("Current hash:", hash);
   const route = routes[hash];
+  console.log("Route object:", route);
 
   if (route && route.template) {
-    const response = await fetch(route.template);
-    content.innerHTML = await response.text();
-    if (route.init) {
-      route.init();
+    try {
+      const response = await fetch(route.template);
+      console.log("Template fetched:", route.template);
+      if (!response.ok) {
+        console.error("Failed to fetch template:", response.status, response.statusText);
+        content.innerHTML = `<p>Error loading page content.</p>`;
+        return;
+      }
+      const html = await response.text();
+      content.innerHTML = html;
+      console.log("Template loaded into content div");
+      if (route.init) {
+        console.log("Initializing component");
+        route.init();
+      }
+      updateNavLinks(hash);
+    } catch (error) {
+        console.error("Error in router:", error);
+        content.innerHTML = `<p>An unexpected error occurred.</p>`;
     }
-    updateNavLinks(hash);
+  } else {
+    console.log("No route found for hash:", hash);
   }
 }
 
