@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const playwright = require('playwright-core');
+const cheerio = require('cheerio');
 
 const app = express();
 const port = 8000;
@@ -35,12 +36,16 @@ app.post('/api/generate', async (req, res) => {
         const page = await browser.newPage();
         await page.goto(url);
         const content = await page.content();
-        console.log(content);
         await browser.close();
-        res.json({ message: 'Content downloaded successfully!' });
+
+        const $ = cheerio.load(content);
+        const text = $('body').text();
+        console.log(text);
+
+        res.json({ message: 'Content downloaded and parsed successfully!' });
     } catch (error) {
-        console.error('Error downloading content:', error);
-        res.status(500).json({ message: 'Failed to download content.' });
+        console.error('Error processing content:', error);
+        res.status(500).json({ message: 'Failed to process content.' });
     }
 });
 
