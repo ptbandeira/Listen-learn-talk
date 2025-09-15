@@ -37,7 +37,7 @@ async function router() {
       console.log("Template loaded into content div");
       if (route.init) {
         console.log("Initializing component");
-        route.init();
+        await route.init();
       }
       updateNavLinks(hash);
     } catch (error) {
