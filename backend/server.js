@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const playwright = require('playwright-core');
 
 const app = express();
 const port = 8000;
@@ -21,14 +23,25 @@ const wordbook = require('./api/wordbook');
 
 app.get('/api/flashcards', flashcards);
 app.get('/api/sentences', sentences);
-app.get('/api-dialogues', dialogues);
+app.get('/api/dialogues', dialogues);
 app.get('/api/wordbook', wordbook);
 
-app.post('/api/generate', (req, res) => {
+app.post('/api/generate', async (req, res) => {
     const { url } = req.body;
     console.log(`Received URL: ${url}`);
-    // TODO: Add content generation logic here
-    res.json({ message: 'Content generation started!' });
+
+    try {
+        const browser = await playwright.chromium.launch();
+        const page = await browser.newPage();
+        await page.goto(url);
+        const content = await page.content();
+        console.log(content);
+        await browser.close();
+        res.json({ message: 'Content downloaded successfully!' });
+    } catch (error) {
+        console.error('Error downloading content:', error);
+        res.status(500).json({ message: 'Failed to download content.' });
+    }
 });
 
 app.listen(port, () => {
