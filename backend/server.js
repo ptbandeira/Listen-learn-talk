@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const playwright = require('playwright-core');
 const cheerio = require('cheerio');
+const { generateContent } = require('./services/openai');
+const prompts = require('./services/generatePrompts');
 
 const app = express();
 const port = 8000;
@@ -40,9 +42,17 @@ app.post('/api/generate', async (req, res) => {
 
         const $ = cheerio.load(content);
         const text = $('body').text();
-        console.log(text);
 
-        res.json({ message: 'Content downloaded and parsed successfully!' });
+        const summary = await generateContent(text, prompts.summary);
+        const vocabulary = await generateContent(text, prompts.vocabulary);
+
+        res.json({ 
+            message: 'Content generated successfully!', 
+            data: {
+                summary,
+                vocabulary
+            }
+        });
     } catch (error) {
         console.error('Error processing content:', error);
         res.status(500).json({ message: 'Failed to process content.' });
