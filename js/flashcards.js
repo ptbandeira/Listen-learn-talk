@@ -8,7 +8,7 @@ export function initFlashcards() {
     let currentCard = 0;
 
     async function loadFlashcards() {
-        flashcards = await fetchData('http://localhost:3000/api/flashcards');
+        flashcards = await fetchData('http://localhost:8000/api/flashcards');
         renderFlashcard();
     }
 
