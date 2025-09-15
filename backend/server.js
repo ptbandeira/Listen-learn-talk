@@ -21,9 +21,15 @@ const wordbook = require('./api/wordbook');
 
 app.get('/api/flashcards', flashcards);
 app.get('/api/sentences', sentences);
-app.get('/api/dialogues', dialogues);
+app.get('/api-dialogues', dialogues);
 app.get('/api/wordbook', wordbook);
 
+app.post('/api/generate', (req, res) => {
+    const { url } = req.body;
+    console.log(`Received URL: ${url}`);
+    // TODO: Add content generation logic here
+    res.json({ message: 'Content generation started!' });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

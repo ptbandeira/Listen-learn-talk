@@ -3,6 +3,7 @@ import { initFlashcards } from './flashcards.js';
 import { initSentences } from './sentences.js';
 import { initDialogues } from './dialogues.js';
 import { initWordbook } from './wordbook.js';
+import { initGenerate } from './generate.js';
 
 const routes = {
   '#home': { template: 'views/home.html', init: initHome },
@@ -10,6 +11,7 @@ const routes = {
   '#sentences': { template: 'views/sentences.html', init: initSentences },
   '#dialogues': { template: 'views/dialogues.html', init: initDialogues },
   '#wordbook': { template: 'views/wordbook.html', init: initWordbook },
+  '#generate': { template: 'views/generate.html', init: initGenerate },
 };
 
 const content = document.getElementById('content');
