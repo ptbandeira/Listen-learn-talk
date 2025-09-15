@@ -8,7 +8,7 @@ export function initDialogues() {
     let currentDialogue = 0;
 
     async function loadDialogues() {
-        dialogues = await fetchData('http://localhost:3000/api/dialogues');
+        dialogues = await fetchData('http://localhost:8000/api/dialogues');
         renderDialogue();
     }
 

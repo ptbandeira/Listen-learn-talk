@@ -8,7 +8,7 @@ export function initSentences() {
     let currentSentence = 0;
 
     async function loadSentences() {
-        sentences = await fetchData('http://localhost:3000/api/sentences');
+        sentences = await fetchData('http://localhost:8000/api/sentences');
         renderSentence();
     }
 
