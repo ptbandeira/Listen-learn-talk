@@ -1,4 +1,5 @@
 import { fetchData } from './utils.js';
+import { API_URL } from './config.js';
 
 export function initFlashcards() {
     const flashcardContainer = document.getElementById('flashcard-container');
@@ -8,7 +9,7 @@ export function initFlashcards() {
     let currentCard = 0;
 
     async function loadFlashcards() {
-        flashcards = await fetchData('http://localhost:8000/api/flashcards');
+        flashcards = await fetchData(`${API_URL}/flashcards`);
         renderFlashcard();
     }
 

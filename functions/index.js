@@ -24,37 +24,47 @@ const openai = new OpenAI({
 });
 
 app.post("/generate", async (req, res) => {
-  const { url } = req.body;
+  const { url, text } = req.body;
 
-  if (!url) {
-    return res.status(400).json({ error: "URL is required" });
+  if (!url && !text) {
+    return res.status(400).json({ error: "URL or text is required" });
   }
 
-  try {
-    const { body: html, url: targetUrl } = await got(url);
-    const metadata = await metascraper({ html, url: targetUrl });
+  let contentToSummarize;
 
-    const contentToSummarize = metadata.description || metadata.title;
+  if (url) {
+    try {
+      const { body: html, url: targetUrl } = await got(url);
+      const metadata = await metascraper({ html, url: targetUrl });
+      contentToSummarize = metadata.description || metadata.title;
+    } catch (error) {
+      console.error("Error fetching URL:", error);
+      return res.status(500).json({ error: "Could not fetch content from the URL" });
+    }
+  } else {
+    contentToSummarize = text;
+  }
 
-    if (!contentToSummarize) {
-      return res.status(500).json({ error: "Could not extract content from the URL" });
+  if (!contentToSummarize) {
+    return res.status(500).json({ error: "Could not extract content" });
+  }
+
+  const prompt = `
+    Please summarize the following text and generate a list of 20 flashcards.
+    Respond with ONLY a valid JSON object in the following format:
+    {
+      "summary": "a few sentences long summary",
+      "flashcards": [
+        {"front": "front of card", "back": "back of card"},
+        {"front": "front of card", "back": "back of card"}
+      ]
     }
 
-    const prompt = `
-      Please summarize the following text and generate a list of 20 flashcards. 
-      Respond with ONLY a valid JSON object in the following format:
-      {
-        "summary": "a few sentences long summary",
-        "flashcards": [
-          {"front": "front of card", "back": "back of card"},
-          {"front": "front of card", "back": "back of card"}
-        ]
-      }
+    Text:
+    ${contentToSummarize}
+  `;
 
-      Text:
-      ${contentToSummarize}
-    `;
-
+  try {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -64,7 +74,7 @@ app.post("/generate", async (req, res) => {
     });
 
     const content = completion.choices[0].message.content;
-    
+
     try {
         const parsedContent = JSON.parse(content);
         res.json(parsedContent);
@@ -73,9 +83,8 @@ app.post("/generate", async (req, res) => {
         console.error("Invalid JSON received:", content);
         return res.status(500).json({ error: "Could not parse response from AI model" });
     }
-
   } catch (error) {
-    console.error("Error with got, metascraper, OpenAI, or parsing:", error);
+    console.error("Error with OpenAI:", error);
     res.status(500).json({ error: "An error occurred while generating content" });
   }
 });

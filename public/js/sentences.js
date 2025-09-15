@@ -1,4 +1,5 @@
 import { fetchData } from './utils.js';
+import { API_URL } from './config.js';
 
 export function initSentences() {
     const sentenceContainer = document.getElementById('sentence-container');
@@ -8,7 +9,7 @@ export function initSentences() {
     let currentSentence = 0;
 
     async function loadSentences() {
-        sentences = await fetchData('http://localhost:8000/api/sentences');
+        sentences = await fetchData(`${API_URL}/sentences`);
         renderSentence();
     }
 

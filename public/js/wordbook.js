@@ -1,10 +1,11 @@
 import { fetchData } from './utils.js';
+import { API_URL } from './config.js';
 
 export function initWordbook() {
     const wordbookContainer = document.getElementById('wordbook-container');
 
     async function loadWordbook() {
-        const wordbook = await fetchData('http://localhost:8000/api/wordbook');
+        const wordbook = await fetchData(`${API_URL}/wordbook`);
         renderWordbook(wordbook);
     }
 

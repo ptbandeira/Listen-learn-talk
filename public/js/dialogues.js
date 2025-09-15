@@ -1,4 +1,5 @@
 import { fetchData } from './utils.js';
+import { API_URL } from './config.js';
 
 export function initDialogues() {
     const dialogueContainer = document.getElementById('dialogue-container');
@@ -8,7 +9,7 @@ export function initDialogues() {
     let currentDialogue = 0;
 
     async function loadDialogues() {
-        dialogues = await fetchData('http://localhost:8000/api/dialogues');
+        dialogues = await fetchData(`${API_URL}/dialogues`);
         renderDialogue();
     }
 

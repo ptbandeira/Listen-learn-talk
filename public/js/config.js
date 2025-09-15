@@ -1,0 +1,1 @@
+export const API_URL = 'https://us-central1-anylingo-2b0c7.cloudfunctions.net/api';
