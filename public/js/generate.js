@@ -7,7 +7,7 @@ export function initGenerate() {
             const url = contentUrl.value;
             if (url) {
                 try {
-                    const response = await fetch('http://localhost:8000/api/generate', {
+                    const response = await fetch('https://us-central1-anylingo-2b0c7.cloudfunctions.net/api/generate', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
