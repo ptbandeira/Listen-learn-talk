@@ -13,6 +13,7 @@ export function initSentences() {
     }
 
     function renderSentence() {
+        if (!sentenceContainer) return;
         if (currentSentence >= sentences.length) {
             sentenceContainer.innerHTML = '<p>No more sentences!</p>';
             return;
@@ -29,10 +30,12 @@ export function initSentences() {
         `;
     }
 
-    newSentenceBtn.addEventListener('click', () => {
-        currentSentence++;
-        renderSentence();
-    });
+    if (newSentenceBtn) {
+        newSentenceBtn.addEventListener('click', () => {
+            currentSentence++;
+            renderSentence();
+        });
+    }
 
     loadSentences();
 }

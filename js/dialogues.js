@@ -13,6 +13,7 @@ export function initDialogues() {
     }
 
     function renderDialogue() {
+        if (!dialogueContainer) return;
         if (currentDialogue >= dialogues.length) {
             dialogueContainer.innerHTML = '<p>No more dialogues!</p>';
             return;
@@ -29,10 +30,12 @@ export function initDialogues() {
         `;
     }
 
-    newDialogueBtn.addEventListener('click', () => {
-        currentDialogue++;
-        renderDialogue();
-    });
+    if (newDialogueBtn) {
+        newDialogueBtn.addEventListener('click', () => {
+            currentDialogue++;
+            renderDialogue();
+        });
+    }
 
     loadDialogues();
 }
