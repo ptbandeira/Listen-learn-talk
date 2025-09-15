@@ -45,12 +45,18 @@ app.post('/api/generate', async (req, res) => {
 
         const summary = await generateContent(text, prompts.summary);
         const vocabulary = await generateContent(text, prompts.vocabulary);
+        const flashcards = await generateContent(text, prompts.flashcards);
+        const sentences = await generateContent(text, prompts.sentences);
+        const dialogues = await generateContent(text, prompts.dialogues);
 
         res.json({ 
             message: 'Content generated successfully!', 
             data: {
                 summary,
-                vocabulary
+                vocabulary,
+                flashcards,
+                sentences,
+                dialogues
             }
         });
     } catch (error) {
