@@ -1,12 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const port = 8000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Serve static files
+app.use(express.static(path.join(__dirname, '..')));
+
 
 // API routes
 const flashcards = require('./api/flashcards');
