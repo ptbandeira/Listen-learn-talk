@@ -13,6 +13,7 @@ export function initFlashcards() {
     }
 
     function renderFlashcard() {
+        if (!flashcardContainer) return;
         if (currentCard >= flashcards.length) {
             flashcardContainer.innerHTML = '<p>No more flashcards!</p>';
             return;
@@ -27,10 +28,12 @@ export function initFlashcards() {
         `;
     }
 
-    newFlashcardBtn.addEventListener('click', () => {
-        currentCard++;
-        renderFlashcard();
-    });
+    if (newFlashcardBtn) {
+        newFlashcardBtn.addEventListener('click', () => {
+            currentCard++;
+            renderFlashcard();
+        });
+    }
 
     loadFlashcards();
 }
