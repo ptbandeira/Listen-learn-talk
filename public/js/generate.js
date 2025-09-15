@@ -1,3 +1,5 @@
+import { API_URL } from './config.js';
+
 export function initGenerate() {
     const generateBtn = document.getElementById('generate-btn');
     const contentUrl = document.getElementById('content-url');
@@ -6,7 +8,7 @@ export function initGenerate() {
 
     const generateContent = async (data) => {
         try {
-            const response = await fetch('/api/generate', {
+            const response = await fetch(`${API_URL}/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
