@@ -7,15 +7,15 @@ const playwright = require('playwright-core');
 const cheerio = require('cheerio');
 const { generateContent } = require('./services/openai');
 const prompts = require('./services/generatePrompts');
+const functions = require('firebase-functions');
 
 const app = express();
-const port = 8000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(path.join(__dirname, '../../public')));
 
 app.post('/api/generate', async (req, res) => {
     const { url } = req.body;
@@ -53,6 +53,4 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+exports.api = functions.https.onRequest(app);
