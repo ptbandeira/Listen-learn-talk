@@ -1,25 +1,40 @@
 export function initGenerate() {
     const generateBtn = document.getElementById('generate-btn');
     const contentUrl = document.getElementById('content-url');
+    const generateTextBtn = document.getElementById('generate-text-btn');
+    const articleText = document.getElementById('article-text');
+
+    const generateContent = async (data) => {
+        try {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            alert(result.message);
+        } catch (error) {
+            console.error('Error generating content:', error);
+            alert('Failed to generate content.');
+        }
+    };
 
     if (generateBtn) {
-        generateBtn.addEventListener('click', async () => {
+        generateBtn.addEventListener('click', () => {
             const url = contentUrl.value;
             if (url) {
-                try {
-                    const response = await fetch('https://us-central1-anylingo-2b0c7.cloudfunctions.net/api/generate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ url })
-                    });
-                    const result = await response.json();
-                    alert(result.message);
-                } catch (error) {
-                    console.error('Error generating content:', error);
-                    alert('Failed to generate content.');
-                }
+                generateContent({ url });
+            }
+        });
+    }
+
+    if (generateTextBtn) {
+        generateTextBtn.addEventListener('click', () => {
+            const text = articleText.value;
+            if (text) {
+                generateContent({ text });
             }
         });
     }

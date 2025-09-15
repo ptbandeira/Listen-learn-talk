@@ -17,19 +17,37 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, '../../public')));
 
+// Route for the root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/index.html'));
+});
+
+// Route for the generate view
+app.get('/generate', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../public/views/generate.html'));
+});
+
 app.post('/api/generate', async (req, res) => {
-    const { url } = req.body;
-    console.log(`Received URL: ${url}`);
+    const { url, text: textInput } = req.body;
+
+    let text = '';
 
     try {
-        const browser = await playwright.chromium.launch();
-        const page = await browser.newPage();
-        await page.goto(url);
-        const content = await page.content();
-        await browser.close();
-
-        const $ = cheerio.load(content);
-        const text = $('body').text();
+        if (url) {
+            console.log(`Received URL: ${url}`);
+            const browser = await playwright.chromium.launch();
+            const page = await browser.newPage();
+            await page.goto(url);
+            const content = await page.content();
+            await browser.close();
+            const $ = cheerio.load(content);
+            text = $('body').text();
+        } else if (textInput) {
+            console.log('Received text input.');
+            text = textInput;
+        } else {
+            return res.status(400).json({ message: 'URL or text input is required.' });
+        }
 
         const summary = await generateContent(text, prompts.summary);
         const vocabulary = await generateContent(text, prompts.vocabulary);
