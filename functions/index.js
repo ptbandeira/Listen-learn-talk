@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const playwright = require('playwright-core');
 const cheerio = require('cheerio');
-const { generateContent } = require('./services/openai');
+const { generateContent, generateTutorResponse } = require('./services/openai');
 const prompts = require('./services/generatePrompts');
 const functions = require('firebase-functions');
 const fs = require('fs');
@@ -141,7 +141,7 @@ app.get('/api/sentences', (req, res) => {
     });
 });
 
-app.get('/api/wordbook', (req, res) => {
+app.get('/api/all-vocabulary', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading content.json:', err);
@@ -152,6 +152,70 @@ app.get('/api/wordbook', (req, res) => {
         const wordbook = content.reduce((acc, item) => acc.concat(item.vocabulary), []);
         res.json(wordbook);
     });
+});
+
+app.post('/api/wordbook', (req, res) => {
+    const { word } = req.body;
+    const wordbookPath = path.join(__dirname, 'data/wordbook.json');
+    fs.readFile(wordbookPath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading wordbook.json:', err);
+            return res.status(500).send('Error reading wordbook data');
+        }
+        const wordbook = JSON.parse(data);
+        wordbook.push(word);
+        fs.writeFile(wordbookPath, JSON.stringify(wordbook, null, 2), (err) => {
+            if (err) {
+                console.error('Error writing wordbook.json:', err);
+                return res.status(500).send('Error writing wordbook data');
+            }
+            res.json({ message: 'Word added to wordbook successfully!' });
+        });
+    });
+});
+
+app.get('/api/my-wordbook', (req, res) => {
+    fs.readFile(path.join(__dirname, 'data/wordbook.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading wordbook.json:', err);
+            res.status(500).send('Error reading wordbook data');
+            return;
+        }
+        res.json(JSON.parse(data));
+    });
+});
+
+app.post('/api/generate-practice-sentences', async (req, res) => {
+    const { words } = req.body;
+
+    if (!words || !Array.isArray(words) || words.length === 0) {
+        return res.status(400).json({ message: 'A list of words is required.' });
+    }
+
+    try {
+        const text = words.join(', ');
+        const sentences = await generateContent(text, prompts.practiceSentences);
+        res.json(JSON.parse(sentences));
+    } catch (error) {
+        console.error('Error generating practice sentences:', error);
+        res.status(500).json({ message: 'Failed to generate practice sentences.' });
+    }
+});
+
+app.post('/api/tutor', async (req, res) => {
+    const { messages } = req.body;
+
+    if (!messages) {
+        return res.status(400).json({ message: 'Messages are required.' });
+    }
+
+    try {
+        const reply = await generateTutorResponse(messages, prompts.tutor);
+        res.json(JSON.parse(reply));
+    } catch (error) {
+        console.error('Error with tutor endpoint:', error);
+        res.status(500).json({ message: 'Failed to get response from tutor.' });
+    }
 });
 
 exports.api = functions.https.onRequest(app);

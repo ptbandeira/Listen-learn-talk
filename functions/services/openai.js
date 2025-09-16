@@ -28,4 +28,24 @@ async function generateContent(text, prompt) {
     }
 }
 
-module.exports = { generateContent };
+async function generateTutorResponse(messages, prompt) {
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo-1106',
+            response_format: { type: "json_object" },
+            messages: [
+                {
+                    role: 'system',
+                    content: prompt
+                },
+                ...messages
+            ]
+        });
+        return response.choices[0].message.content;
+    } catch (error) {
+        console.error('Error generating tutor response:', error);
+        throw new Error('Failed to generate tutor response.');
+    }
+}
+
+module.exports = { generateContent, generateTutorResponse };

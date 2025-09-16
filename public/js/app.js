@@ -5,6 +5,7 @@ import { initDialogues } from './dialogues.js';
 import { initWordbook } from './wordbook.js';
 import { initGenerate } from './generate.js';
 import { initContent } from './content.js';
+import { initTutor } from './tutor.js';
 
 const routes = {
   '#home': { template: 'views/home.html', init: initHome },
@@ -14,6 +15,7 @@ const routes = {
   '#wordbook': { template: 'views/wordbook.html', init: initWordbook },
   '#generate': { template: 'views/generate.html', init: initGenerate },
   '#content': { template: 'views/content.html', init: initContent },
+  '#tutor': { template: 'views/tutor.html', init: initTutor },
 };
 
 const content = document.getElementById('content');
@@ -22,7 +24,10 @@ async function router() {
   console.log("Router function called");
   const hash = window.location.hash || '#home';
   console.log("Current hash:", hash);
-  const route = routes[hash];
+
+  const [path, queryString] = hash.split('?');
+
+  const route = routes[path];
   console.log("Route object:", route);
 
   if (route && route.template) {
