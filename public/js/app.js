@@ -4,6 +4,7 @@ import { initSentences } from './sentences.js';
 import { initDialogues } from './dialogues.js';
 import { initWordbook } from './wordbook.js';
 import { initGenerate } from './generate.js';
+import { initContent } from './content.js';
 
 const routes = {
   '#home': { template: 'views/home.html', init: initHome },
@@ -12,6 +13,7 @@ const routes = {
   '#dialogues': { template: 'views/dialogues.html', init: initDialogues },
   '#wordbook': { template: 'views/wordbook.html', init: initWordbook },
   '#generate': { template: 'views/generate.html', init: initGenerate },
+  '#content': { template: 'views/content.html', init: initContent },
 };
 
 const content = document.getElementById('content');

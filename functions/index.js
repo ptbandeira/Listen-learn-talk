@@ -32,6 +32,7 @@ app.post('/api/generate', async (req, res) => {
     const { url, text: textInput } = req.body;
 
     let text = '';
+    let title = '';
 
     try {
         if (url) {
@@ -39,6 +40,7 @@ app.post('/api/generate', async (req, res) => {
             const browser = await playwright.chromium.launch();
             const page = await browser.newPage();
             await page.goto(url);
+            title = await page.title();
             const content = await page.content();
             await browser.close();
             const $ = cheerio.load(content);
@@ -46,6 +48,7 @@ app.post('/api/generate', async (req, res) => {
         } else if (textInput) {
             console.log('Received text input.');
             text = textInput;
+            title = textInput.substring(0, 20) + "...";
         } else {
             return res.status(400).json({ message: 'URL or text input is required.' });
         }
@@ -58,20 +61,60 @@ app.post('/api/generate', async (req, res) => {
             generateContent(text, prompts.dialogues)
         ]);
 
-        res.json({
-            message: 'Content generated successfully!',
-            data: {
-                summary: JSON.parse(summary).summary,
-                vocabulary: JSON.parse(vocabulary).vocabulary,
-                flashcards: JSON.parse(flashcards).flashcards,
-                sentences: JSON.parse(sentences).sentences,
-                dialogues: JSON.parse(dialogues).dialogues
+        const newContent = {
+            id: Date.now(), // Use a timestamp for a unique ID
+            date: new Date().toISOString().split('T')[0],
+            title: title,
+            source: url || 'Pasted Text',
+            type: url ? 'news' : 'text',
+            summary: JSON.parse(summary).summary,
+            vocabulary: JSON.parse(vocabulary).vocabulary,
+            flashcards: JSON.parse(flashcards).flashcards,
+            sentences: JSON.parse(sentences).sentences,
+            dialogues: JSON.parse(dialogues).dialogues
+        };
+
+        const contentPath = path.join(__dirname, 'data/content.json');
+        fs.readFile(contentPath, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading content.json:', err);
+                return res.status(500).send('Error reading content data');
             }
+            const content = JSON.parse(data);
+            content.push(newContent);
+            fs.writeFile(contentPath, JSON.stringify(content, null, 2), (err) => {
+                if (err) {
+                    console.error('Error writing content.json:', err);
+                    return res.status(500).send('Error writing content data');
+                }
+                res.json({
+                    message: 'Content generated and saved successfully!',
+                    data: newContent
+                });
+            });
         });
     } catch (error) {
         console.error('Error processing content:', error);
         res.status(500).json({ message: 'Failed to process content.' });
     }
+});
+
+app.get('/api/content/:id', (req, res) => {
+    const contentId = parseInt(req.params.id);
+    fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading content.json:', err);
+            res.status(500).send('Error reading content data');
+            return;
+        }
+        const content = JSON.parse(data);
+        const singleContent = content.find(item => item.id === contentId);
+        if (singleContent) {
+            res.json(singleContent);
+        } else {
+            res.status(404).json({ message: 'Content not found' });
+        }
+    });
 });
 
 app.get('/api/dialogues', (req, res) => {
