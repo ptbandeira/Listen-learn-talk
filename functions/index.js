@@ -50,11 +50,13 @@ app.post('/api/generate', async (req, res) => {
             return res.status(400).json({ message: 'URL or text input is required.' });
         }
 
-        const summary = await generateContent(text, prompts.summary);
-        const vocabulary = await generateContent(text, prompts.vocabulary);
-        const flashcards = await generateContent(text, prompts.flashcards);
-        const sentences = await generateContent(text, prompts.sentences);
-        const dialogues = await generateContent(text, prompts.dialogues);
+        const [summary, vocabulary, flashcards, sentences, dialogues] = await Promise.all([
+            generateContent(text, prompts.summary),
+            generateContent(text, prompts.vocabulary),
+            generateContent(text, prompts.flashcards),
+            generateContent(text, prompts.sentences),
+            generateContent(text, prompts.dialogues)
+        ]);
 
         res.json({
             message: 'Content generated successfully!',
