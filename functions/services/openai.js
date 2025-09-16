@@ -8,11 +8,12 @@ const openai = new OpenAI({
 async function generateContent(text, prompt) {
     try {
         const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo-1106',
+            response_format: { type: "json_object" },
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a helpful assistant that generates educational content based on a given text.'
+                    content: 'You are a helpful assistant that generates educational content based on a given text and returns the content in JSON format.'
                 },
                 {
                     role: 'user',

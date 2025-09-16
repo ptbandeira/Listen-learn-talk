@@ -61,11 +61,11 @@ app.post('/api/generate', async (req, res) => {
         res.json({
             message: 'Content generated successfully!',
             data: {
-                summary,
-                vocabulary,
-                flashcards,
-                sentences,
-                dialogues
+                summary: JSON.parse(summary).summary,
+                vocabulary: JSON.parse(vocabulary).vocabulary,
+                flashcards: JSON.parse(flashcards).flashcards,
+                sentences: JSON.parse(sentences).sentences,
+                dialogues: JSON.parse(dialogues).dialogues
             }
         });
     } catch (error) {
