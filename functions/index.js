@@ -78,14 +78,14 @@ app.post('/api/generate', async (req, res) => {
         fs.readFile(contentPath, 'utf8', (err, data) => {
             if (err) {
                 console.error('Error reading content.json:', err);
-                return res.status(500).send('Error reading content data');
+                return res.status(500).json({ message: 'Error reading content data' });
             }
             const content = JSON.parse(data);
             content.push(newContent);
             fs.writeFile(contentPath, JSON.stringify(content, null, 2), (err) => {
                 if (err) {
                     console.error('Error writing content.json:', err);
-                    return res.status(500).send('Error writing content data');
+                    return res.status(500).json({ message: 'Error writing content data' });
                 }
                 res.json({
                     message: 'Content generated and saved successfully!',
@@ -104,7 +104,7 @@ app.get('/api/content/:id', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading content.json:', err);
-            res.status(500).send('Error reading content data');
+            res.status(500).json({ message: 'Error reading content data' });
             return;
         }
         const content = JSON.parse(data);
@@ -121,7 +121,7 @@ app.get('/api/dialogues', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/dialogues.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading dialogues.json:', err);
-            res.status(500).send('Error reading dialogues data');
+            res.status(500).json({ message: 'Error reading dialogues data' });
             return;
         }
         res.json(JSON.parse(data));
@@ -132,7 +132,7 @@ app.get('/api/sentences', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading content.json:', err);
-            res.status(500).send('Error reading sentences data');
+            res.status(500).json({ message: 'Error reading sentences data' });
             return;
         }
         const content = JSON.parse(data);
@@ -145,7 +145,7 @@ app.get('/api/all-vocabulary', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading content.json:', err);
-            res.status(500).send('Error reading wordbook data');
+            res.status(500).json({ message: 'Error reading wordbook data' });
             return;
         }
         const content = JSON.parse(data);
@@ -160,14 +160,14 @@ app.post('/api/wordbook', (req, res) => {
     fs.readFile(wordbookPath, 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading wordbook.json:', err);
-            return res.status(500).send('Error reading wordbook data');
+            return res.status(500).json({ message: 'Error reading wordbook data' });
         }
         const wordbook = JSON.parse(data);
         wordbook.push(word);
         fs.writeFile(wordbookPath, JSON.stringify(wordbook, null, 2), (err) => {
             if (err) {
                 console.error('Error writing wordbook.json:', err);
-                return res.status(500).send('Error writing wordbook data');
+                return res.status(500).json({ message: 'Error writing wordbook data' });
             }
             res.json({ message: 'Word added to wordbook successfully!' });
         });
@@ -178,7 +178,7 @@ app.get('/api/my-wordbook', (req, res) => {
     fs.readFile(path.join(__dirname, 'data/wordbook.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Error reading wordbook.json:', err);
-            res.status(500).send('Error reading wordbook data');
+            res.status(500).json({ message: 'Error reading wordbook data' });
             return;
         }
         res.json(JSON.parse(data));
