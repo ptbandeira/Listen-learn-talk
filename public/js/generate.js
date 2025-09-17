@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+import { API_HOST, fetchData } from './utils.js';
 
 export function initGenerate() {
     const generateBtn = document.getElementById('generate-btn');
@@ -8,19 +8,14 @@ export function initGenerate() {
 
     const generateContent = async (data) => {
         try {
-            const response = await fetch(`${API_URL}/generate`, {
+            const result = await fetchData(`${API_HOST}/api/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            const result = await response.json();
-            if (response.ok) {
-                window.location.hash = `#content?id=${result.data.id}`;
-            } else {
-                alert(result.message);
-            }
+            window.location.hash = `#content?id=${result.data.id}`;
         } catch (error) {
             console.error('Error generating content:', error);
             alert('Failed to generate content.');

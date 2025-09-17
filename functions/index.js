@@ -19,9 +19,7 @@ const metascraper = require('metascraper')([
     require('metascraper-url')()
 ]);
 
-admin.initializeApp({
-    databaseURL: "https://anylingo-2b0c7.firebaseio.com"
-});
+admin.initializeApp({databaseURL: "https://anylingo-2b0c7.firebaseio.com"});
 const db = admin.database();
 
 const app = express();
@@ -42,7 +40,7 @@ app.get('/generate', (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/views/generate.html'));
 });
 
-app.post('/api/generate', async (req, res) => {
+app.post('/generate', async (req, res) => {
     console.log('Received request for /api/generate');
     const { url, text: textInput } = req.body;
     console.log('Request body:', req.body);
@@ -107,7 +105,7 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
-app.get('/api/content/:id', async (req, res) => {
+app.get('/content/:id', async (req, res) => {
     const contentId = req.params.id;
     try {
         const snapshot = await db.ref(`content/${contentId}`).once('value');
@@ -123,10 +121,28 @@ app.get('/api/content/:id', async (req, res) => {
     }
 });
 
-app.get('/api/dialogues', async (req, res) => {
+app.get('/flashcards', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
+        if (!content) {
+            return res.json([]);
+        }
+        const flashcards = Object.values(content).reduce((acc, item) => acc.concat(item.flashcards || []), []);
+        res.json(flashcards);
+    } catch (error) {
+        console.error('Error reading flashcards:', error);
+        res.status(500).json({ message: 'Error reading flashcards data' });
+    }
+});
+
+app.get('/dialogues', async (req, res) => {
+    try {
+        const snapshot = await db.ref('content').once('value');
+        const content = snapshot.val();
+        if (!content) {
+            return res.json([]);
+        }
         const dialogues = Object.values(content).reduce((acc, item) => acc.concat(item.dialogues || []), []);
         res.json(dialogues);
     } catch (error) {
@@ -135,10 +151,13 @@ app.get('/api/dialogues', async (req, res) => {
     }
 });
 
-app.get('/api/sentences', async (req, res) => {
+app.get('/sentences', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
+        if (!content) {
+            return res.json([]);
+        }
         const sentences = Object.values(content).reduce((acc, item) => acc.concat(item.sentences || []), []);
         res.json(sentences);
     } catch (error) {
@@ -147,10 +166,13 @@ app.get('/api/sentences', async (req, res) => {
     }
 });
 
-app.get('/api/all-vocabulary', async (req, res) => {
+app.get('/all-vocabulary', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
+        if (!content) {
+            return res.json([]);
+        }
         const wordbook = Object.values(content).reduce((acc, item) => acc.concat(item.vocabulary || []), []);
         res.json(wordbook);
     } catch (error) {
@@ -159,7 +181,7 @@ app.get('/api/all-vocabulary', async (req, res) => {
     }
 });
 
-app.post('/api/wordbook', async (req, res) => {
+app.post('/wordbook', async (req, res) => {
     const { word } = req.body;
     try {
         const newWordRef = db.ref('wordbook').push();
@@ -171,7 +193,7 @@ app.post('/api/wordbook', async (req, res) => {
     }
 });
 
-app.get('/api/my-wordbook', async (req, res) => {
+app.get('/my-wordbook', async (req, res) => {
     try {
         const snapshot = await db.ref('wordbook').once('value');
         const wordbook = snapshot.val();
@@ -182,7 +204,7 @@ app.get('/api/my-wordbook', async (req, res) => {
     }
 });
 
-app.post('/api/generate-practice-sentences', async (req, res) => {
+app.post('/generate-practice-sentences', async (req, res) => {
     const { words } = req.body;
 
     if (!words || !Array.isArray(words) || words.length === 0) {
@@ -199,7 +221,7 @@ app.post('/api/generate-practice-sentences', async (req, res) => {
     }
 });
 
-app.post('/api/tutor', async (req, res) => {
+app.post('/tutor', async (req, res) => {
     const { messages } = req.body;
 
     if (!messages) {
@@ -215,4 +237,4 @@ app.post('/api/tutor', async (req, res) => {
     }
 });
 
-exports.api = functions.https.onRequest(app);
+exports.api = functions.runWith({ timeoutSeconds: 300 }).https.onRequest(app);
