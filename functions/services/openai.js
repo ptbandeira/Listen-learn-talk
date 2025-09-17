@@ -1,8 +1,8 @@
-require('dotenv').config();
+const functions = require('firebase-functions');
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: functions.config().openai.key,
 });
 
 async function generateContent(text, prompt) {

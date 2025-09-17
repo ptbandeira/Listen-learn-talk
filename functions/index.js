@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -20,7 +19,9 @@ const metascraper = require('metascraper')([
     require('metascraper-url')()
 ]);
 
-admin.initializeApp();
+admin.initializeApp({
+    databaseURL: "https://anylingo-2b0c7.firebaseio.com"
+});
 const db = admin.database();
 
 const app = express();
