@@ -8,7 +8,10 @@ const cheerio = require('cheerio');
 const { generateContent, generateTutorResponse } = require('./services/openai');
 const prompts = require('./services/generatePrompts');
 const functions = require('firebase-functions');
-const fs = require('fs');
+const admin = require('firebase-admin');
+
+admin.initializeApp();
+const db = admin.database();
 
 const app = express();
 
@@ -29,7 +32,9 @@ app.get('/generate', (req, res) => {
 });
 
 app.post('/api/generate', async (req, res) => {
+    console.log('Received request for /api/generate');
     const { url, text: textInput } = req.body;
+    console.log('Request body:', req.body);
 
     let text = '';
     let title = '';
@@ -45,14 +50,18 @@ app.post('/api/generate', async (req, res) => {
             await browser.close();
             const $ = cheerio.load(content);
             text = $('body').text();
+            console.log('Text extracted from URL:', text.substring(0, 100) + '...');
         } else if (textInput) {
             console.log('Received text input.');
             text = textInput;
             title = textInput.substring(0, 20) + "...";
+            console.log('Text input:', text.substring(0, 100) + '...');
         } else {
+            console.log('URL or text input is required.');
             return res.status(400).json({ message: 'URL or text input is required.' });
         }
 
+        console.log('Generating content from OpenAI...');
         const [summary, vocabulary, flashcards, sentences, dialogues] = await Promise.all([
             generateContent(text, prompts.summary),
             generateContent(text, prompts.vocabulary),
@@ -61,8 +70,11 @@ app.post('/api/generate', async (req, res) => {
             generateContent(text, prompts.dialogues)
         ]);
 
+        console.log('Content generated from OpenAI.');
+
+        const newContentRef = db.ref('content').push();
         const newContent = {
-            id: Date.now(), // Use a timestamp for a unique ID
+            id: newContentRef.key,
             date: new Date().toISOString().split('T')[0],
             title: title,
             source: url || 'Pasted Text',
@@ -74,24 +86,12 @@ app.post('/api/generate', async (req, res) => {
             dialogues: JSON.parse(dialogues).dialogues
         };
 
-        const contentPath = path.join(__dirname, 'data/content.json');
-        fs.readFile(contentPath, 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading content.json:', err);
-                return res.status(500).json({ message: 'Error reading content data' });
-            }
-            const content = JSON.parse(data);
-            content.push(newContent);
-            fs.writeFile(contentPath, JSON.stringify(content, null, 2), (err) => {
-                if (err) {
-                    console.error('Error writing content.json:', err);
-                    return res.status(500).json({ message: 'Error writing content data' });
-                }
-                res.json({
-                    message: 'Content generated and saved successfully!',
-                    data: newContent
-                });
-            });
+        await newContentRef.set(newContent);
+
+        console.log('Content saved successfully.');
+        res.json({
+            message: 'Content generated and saved successfully!',
+            data: newContent
         });
     } catch (error) {
         console.error('Error processing content:', error);
@@ -99,90 +99,79 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
-app.get('/api/content/:id', (req, res) => {
-    const contentId = parseInt(req.params.id);
-    fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading content.json:', err);
-            res.status(500).json({ message: 'Error reading content data' });
-            return;
-        }
-        const content = JSON.parse(data);
-        const singleContent = content.find(item => item.id === contentId);
+app.get('/api/content/:id', async (req, res) => {
+    const contentId = req.params.id;
+    try {
+        const snapshot = await db.ref(`content/${contentId}`).once('value');
+        const singleContent = snapshot.val();
         if (singleContent) {
             res.json(singleContent);
         } else {
             res.status(404).json({ message: 'Content not found' });
         }
-    });
+    } catch (error) {
+        console.error('Error reading content:', error);
+        res.status(500).json({ message: 'Error reading content data' });
+    }
 });
 
-app.get('/api/dialogues', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data/dialogues.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading dialogues.json:', err);
-            res.status(500).json({ message: 'Error reading dialogues data' });
-            return;
-        }
-        res.json(JSON.parse(data));
-    });
+app.get('/api/dialogues', async (req, res) => {
+    try {
+        const snapshot = await db.ref('content').once('value');
+        const content = snapshot.val();
+        const dialogues = Object.values(content).reduce((acc, item) => acc.concat(item.dialogues || []), []);
+        res.json(dialogues);
+    } catch (error) {
+        console.error('Error reading dialogues:', error);
+        res.status(500).json({ message: 'Error reading dialogues data' });
+    }
 });
 
-app.get('/api/sentences', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading content.json:', err);
-            res.status(500).json({ message: 'Error reading sentences data' });
-            return;
-        }
-        const content = JSON.parse(data);
-        const sentences = content.reduce((acc, item) => acc.concat(item.sentences), []);
+app.get('/api/sentences', async (req, res) => {
+    try {
+        const snapshot = await db.ref('content').once('value');
+        const content = snapshot.val();
+        const sentences = Object.values(content).reduce((acc, item) => acc.concat(item.sentences || []), []);
         res.json(sentences);
-    });
+    } catch (error) {
+        console.error('Error reading sentences:', error);
+        res.status(500).json({ message: 'Error reading sentences data' });
+    }
 });
 
-app.get('/api/all-vocabulary', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data/content.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading content.json:', err);
-            res.status(500).json({ message: 'Error reading wordbook data' });
-            return;
-        }
-        const content = JSON.parse(data);
-        const wordbook = content.reduce((acc, item) => acc.concat(item.vocabulary), []);
+app.get('/api/all-vocabulary', async (req, res) => {
+    try {
+        const snapshot = await db.ref('content').once('value');
+        const content = snapshot.val();
+        const wordbook = Object.values(content).reduce((acc, item) => acc.concat(item.vocabulary || []), []);
         res.json(wordbook);
-    });
+    } catch (error) {
+        console.error('Error reading vocabulary:', error);
+        res.status(500).json({ message: 'Error reading wordbook data' });
+    }
 });
 
-app.post('/api/wordbook', (req, res) => {
+app.post('/api/wordbook', async (req, res) => {
     const { word } = req.body;
-    const wordbookPath = path.join(__dirname, 'data/wordbook.json');
-    fs.readFile(wordbookPath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading wordbook.json:', err);
-            return res.status(500).json({ message: 'Error reading wordbook data' });
-        }
-        const wordbook = JSON.parse(data);
-        wordbook.push(word);
-        fs.writeFile(wordbookPath, JSON.stringify(wordbook, null, 2), (err) => {
-            if (err) {
-                console.error('Error writing wordbook.json:', err);
-                return res.status(500).json({ message: 'Error writing wordbook data' });
-            }
-            res.json({ message: 'Word added to wordbook successfully!' });
-        });
-    });
+    try {
+        const newWordRef = db.ref('wordbook').push();
+        await newWordRef.set(word);
+        res.json({ message: 'Word added to wordbook successfully!' });
+    } catch (error) {
+        console.error('Error writing to wordbook:', error);
+        res.status(500).json({ message: 'Error writing wordbook data' });
+    }
 });
 
-app.get('/api/my-wordbook', (req, res) => {
-    fs.readFile(path.join(__dirname, 'data/wordbook.json'), 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading wordbook.json:', err);
-            res.status(500).json({ message: 'Error reading wordbook data' });
-            return;
-        }
-        res.json(JSON.parse(data));
-    });
+app.get('/api/my-wordbook', async (req, res) => {
+    try {
+        const snapshot = await db.ref('wordbook').once('value');
+        const wordbook = snapshot.val();
+        res.json(Object.values(wordbook || {}));
+    } catch (error) {
+        console.error('Error reading wordbook:', error);
+        res.status(500).json({ message: 'Error reading wordbook data' });
+    }
 });
 
 app.post('/api/generate-practice-sentences', async (req, res) => {
