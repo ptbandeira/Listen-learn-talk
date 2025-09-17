@@ -3,12 +3,22 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-const playwright = require('playwright-core');
 const cheerio = require('cheerio');
 const { generateContent, generateTutorResponse } = require('./services/openai');
 const prompts = require('./services/generatePrompts');
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const got = require('got');
+const metascraper = require('metascraper')([
+    require('metascraper-author')(),
+    require('metascraper-date')(),
+    require('metascraper-description')(),
+    require('metascraper-image')(),
+    require('metascraper-logo')(),
+    require('metascraper-publisher')(),
+    require('metascraper-title')(),
+    require('metascraper-url')()
+]);
 
 admin.initializeApp();
 const db = admin.database();
@@ -42,13 +52,10 @@ app.post('/api/generate', async (req, res) => {
     try {
         if (url) {
             console.log(`Received URL: ${url}`);
-            const browser = await playwright.chromium.launch();
-            const page = await browser.newPage();
-            await page.goto(url);
-            title = await page.title();
-            const content = await page.content();
-            await browser.close();
-            const $ = cheerio.load(content);
+            const { body: html, url: finalUrl } = await got(url);
+            const metadata = await metascraper({ html, url: finalUrl });
+            title = metadata.title;
+            const $ = cheerio.load(html);
             text = $('body').text();
             console.log('Text extracted from URL:', text.substring(0, 100) + '...');
         } else if (textInput) {
