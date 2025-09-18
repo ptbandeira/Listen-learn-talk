@@ -30,18 +30,8 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, '../../public')));
 
-// Route for the root path
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
-});
-
-// Route for the generate view
-app.get('/generate', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/views/generate.html'));
-});
-
 app.post('/generate', async (req, res) => {
-    console.log('Received request for /api/generate');
+    console.log('Received request for /generate');
     const { url, text: textInput } = req.body;
     console.log('Request body:', req.body);
 
@@ -67,14 +57,22 @@ app.post('/generate', async (req, res) => {
             return res.status(400).json({ message: 'URL or text input is required.' });
         }
 
-        console.log('Generating content from OpenAI...');
-        const [summary, vocabulary, flashcards, sentences, dialogues] = await Promise.all([
-            generateContent(text, prompts.summary),
-            generateContent(text, prompts.vocabulary),
-            generateContent(text, prompts.flashcards),
-            generateContent(text, prompts.sentences),
-            generateContent(text, prompts.dialogues)
-        ]);
+        console.log('Generating content from OpenAI sequentially...');
+
+        console.log('Generating summary...');
+        const summary = await generateContent(text, prompts.summary);
+
+        console.log('Generating vocabulary...');
+        const vocabulary = await generateContent(text, prompts.vocabulary);
+
+        console.log('Generating flashcards...');
+        const flashcards = await generateContent(text, prompts.flashcards);
+
+        console.log('Generating sentences...');
+        const sentences = await generateContent(text, prompts.sentences);
+
+        console.log('Generating dialogues...');
+        const dialogues = await generateContent(text, prompts.dialogues);
 
         console.log('Content generated from OpenAI.');
 
