@@ -19,6 +19,7 @@ const metascraper = require('metascraper')([
     require('metascraper-url')()
 ]);
 
+// A comment to force redeployment
 admin.initializeApp({databaseURL: "https://anylingo-2b0c7.firebaseio.com"});
 const db = admin.database();
 
@@ -30,18 +31,8 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, '../../public')));
 
-// Route for the root path
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
-});
-
-// Route for the generate view
-app.get('/generate', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/views/generate.html'));
-});
-
-app.post('/api/generate', async (req, res) => {
-    console.log('Received request for /api/generate');
+app.post('/generate', async (req, res) => {
+    console.log('Received request for /generate');
     const { url, text: textInput } = req.body;
     console.log('Request body:', req.body);
 
@@ -113,7 +104,7 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
-app.get('/api/content/:id', async (req, res) => {
+app.get('/content/:id', async (req, res) => {
     const contentId = req.params.id;
     try {
         const snapshot = await db.ref(`content/${contentId}`).once('value');
@@ -129,7 +120,7 @@ app.get('/api/content/:id', async (req, res) => {
     }
 });
 
-app.get('/api/flashcards', async (req, res) => {
+app.get('/flashcards', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
@@ -144,7 +135,7 @@ app.get('/api/flashcards', async (req, res) => {
     }
 });
 
-app.get('/api/dialogues', async (req, res) => {
+app.get('/dialogues', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
@@ -159,7 +150,7 @@ app.get('/api/dialogues', async (req, res) => {
     }
 });
 
-app.get('/api/sentences', async (req, res) => {
+app.get('/sentences', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
@@ -174,7 +165,7 @@ app.get('/api/sentences', async (req, res) => {
     }
 });
 
-app.get('/api/all-vocabulary', async (req, res) => {
+app.get('/all-vocabulary', async (req, res) => {
     try {
         const snapshot = await db.ref('content').once('value');
         const content = snapshot.val();
@@ -189,7 +180,7 @@ app.get('/api/all-vocabulary', async (req, res) => {
     }
 });
 
-app.post('/api/wordbook', async (req, res) => {
+app.post('/wordbook', async (req, res) => {
     const { word } = req.body;
     try {
         const newWordRef = db.ref('wordbook').push();
@@ -201,7 +192,7 @@ app.post('/api/wordbook', async (req, res) => {
     }
 });
 
-app.get('/api/my-wordbook', async (req, res) => {
+app.get('/my-wordbook', async (req, res) => {
     try {
         const snapshot = await db.ref('wordbook').once('value');
         const wordbook = snapshot.val();
@@ -212,7 +203,7 @@ app.get('/api/my-wordbook', async (req, res) => {
     }
 });
 
-app.post('/api/generate-practice-sentences', async (req, res) => {
+app.post('/generate-practice-sentences', async (req, res) => {
     const { words } = req.body;
 
     if (!words || !Array.isArray(words) || words.length === 0) {
@@ -229,7 +220,7 @@ app.post('/api/generate-practice-sentences', async (req, res) => {
     }
 });
 
-app.post('/api/tutor', async (req, res) => {
+app.post('/tutor', async (req, res) => {
     const { messages } = req.body;
 
     if (!messages) {
@@ -245,5 +236,4 @@ app.post('/api/tutor', async (req, res) => {
     }
 });
 
-// Added a comment to force redeployment
 exports.api = functions.runWith({ timeoutSeconds: 300 }).https.onRequest(app);
